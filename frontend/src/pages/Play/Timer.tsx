@@ -11,7 +11,6 @@ const Timer = ({ time, started, interval = 1000, onEnd }: TimerProps) => {
 	const [internalTime, setInternalTime] = useState(time)
 	const timerRef = useRef<any>(time)
 	useEffect(() => {
-		console.log(internalTime);
 		if (started && internalTime === 0 && onEnd) {
 			onEnd()
 			setInternalTime(time);

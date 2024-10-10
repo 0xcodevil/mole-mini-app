@@ -156,7 +156,7 @@ const Game = () => {
 			{/* Moles are always visible but not always active */}
 			<main ref={boardRef} className="w-screen h-screen px-[10px] pt-[80px]">
             	<div className="absolute w-[500px] top-[30px] left-0 h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_-10%,#00000000_50%)]" />
-				<div className="grid grid-cols-3 justify-items-center">
+				<div className="grid grid-cols-3 justify-items-center gap-y-2">
 					{moles.map(({ speed, delay, points }, id) => (
 						<Mole
 							key={id}
