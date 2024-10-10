@@ -34,6 +34,12 @@ const Mole = ({
 	// Use a callback to cache the function and share it between effects.
 	const setMole = useCallback((override = false) => {
 		// Give a 1% chance of getting the "Golden" Mole.
+		if (override) {
+			pointsRef.current = constants.REGULAR_SCORE
+			setImage('mole-0.png');
+			return;
+		}
+
 		let random = Math.random()
 		if (random < constants.GOLDEN_CHANCE) {
 			// Create the "Golden" Mole
