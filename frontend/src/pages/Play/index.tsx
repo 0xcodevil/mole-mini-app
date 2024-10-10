@@ -76,7 +76,8 @@ const Game = () => {
 				;[playWhack, playSqueak, playSqueakOut][Math.floor(Math.random() * 3)]()
 			}
 		}
-		setScore(score + points)
+		let newScore = score + points;
+		setScore(newScore > 0 ? newScore : 0);
 	}
 
 	const endGame = () => {

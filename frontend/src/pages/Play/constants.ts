@@ -6,8 +6,8 @@ const constants = {
 	MOLES: 12,
 	REGULAR_SCORE: 100,
 	GOLDEN_SCORE: 1000,
+	BOMB_SCORE: -1000,
 	GOLDEN_CHANCE: 0.1,
-	BOMB: -1000,
 	BOMB_CHANCE: 0.3,
 }
 

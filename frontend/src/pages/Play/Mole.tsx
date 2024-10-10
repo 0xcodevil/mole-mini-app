@@ -34,14 +34,18 @@ const Mole = ({
 	// Use a callback to cache the function and share it between effects.
 	const setMole = useCallback((override = false) => {
 		// Give a 1% chance of getting the "Golden" Mole.
-		if (Math.random() < constants.GOLDEN_CHANCE || override) {
+		let random = Math.random()
+		if (random < constants.GOLDEN_CHANCE) {
 			// Create the "Golden" Mole
 			pointsRef.current = constants.GOLDEN_SCORE
-			setImage('mole-2.png');
+			setImage('mole-2.png')
+		} else if (random < constants.BOMB_CHANCE) {
+			pointsRef.current = constants.BOMB_SCORE
+			setImage('bomb.png')
 		} else {
 			// Create a "Regular" Mole
 			pointsRef.current = constants.REGULAR_SCORE
-			if (Math.random() < (1 - constants.GOLDEN_CHANCE) / 2 + constants.GOLDEN_CHANCE) setImage('mole-0.png');
+			if (Math.random() < (1 - constants.BOMB_CHANCE) / 2 + constants.BOMB_CHANCE) setImage('mole-0.png');
 			else setImage('mole-1.png');
 		}
 	}, [])
@@ -67,6 +71,7 @@ const Mole = ({
 				delay,
 				repeatDelay: delay,
 				onRepeat: () => {
+					if (pointsRef.current < 0) return;
 					pointsRef.current = Math.floor(
 						Math.max(pointsRef.current * constants.POINTS_MULTIPLIER, pointsMin)
 					)
