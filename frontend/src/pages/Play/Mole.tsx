@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback, MouseEvent } from "react";
 import gsap from "gsap";
-import constants from "./constants";
+import { GAME } from "@/libs/constants";
 
 interface MoleProps {
 	active: boolean;
@@ -35,24 +35,26 @@ const Mole = ({
 	const setMole = useCallback((override = false) => {
 		// Give a 1% chance of getting the "Golden" Mole.
 		if (override) {
-			pointsRef.current = constants.REGULAR_SCORE
+			pointsRef.current = GAME.NORMAL_SCORE
 			setImage('mole-0.png');
 			return;
 		}
 
 		let random = Math.random()
-		if (random < constants.GOLDEN_CHANCE) {
+		if (random < GAME.GOLDEN_CHANCE) {
 			// Create the "Golden" Mole
-			pointsRef.current = constants.GOLDEN_SCORE
+			pointsRef.current = GAME.GOLDEN_SCORE
 			setImage('mole-2.png')
-		} else if (random < constants.BOMB_CHANCE) {
-			pointsRef.current = constants.BOMB_SCORE
+		} else if (random < GAME.BOMB_CHANCE) {
+			pointsRef.current = GAME.BOMB_SCORE
 			setImage('bomb.png')
+		} else if (random < GAME.SPECIAL_CHANCE) {
+			pointsRef.current = GAME.SPECIAL_SCORE
+			setImage('mole-1.png')
 		} else {
 			// Create a "Regular" Mole
-			pointsRef.current = constants.REGULAR_SCORE
-			if (Math.random() < (1 - constants.BOMB_CHANCE) / 2 + constants.BOMB_CHANCE) setImage('mole-0.png');
-			else setImage('mole-1.png');
+			pointsRef.current = GAME.NORMAL_SCORE
+			setImage('mole-0.png');
 		}
 	}, [])
 
@@ -79,7 +81,7 @@ const Mole = ({
 				onRepeat: () => {
 					if (pointsRef.current < 0) return;
 					pointsRef.current = Math.floor(
-						Math.max(pointsRef.current * constants.POINTS_MULTIPLIER, pointsMin)
+						Math.max(pointsRef.current * GAME.POINTS_MULTIPLIER, pointsMin)
 					)
 				},
 			})
@@ -105,7 +107,7 @@ const Mole = ({
 						setWhacked(false)
 						bobRef.current
 							.restart()
-							.timeScale(bobRef.current.timeScale() * constants.TIME_MULTIPLIER)
+							.timeScale(bobRef.current.timeScale() * GAME.TIME_MULTIPLIER)
 					})
 				},
 			})
@@ -187,7 +189,7 @@ const Mole = ({
 	const whack = (e: MouseEvent) => {
 		setWhacked(true)
 		renderScore(e.pageX, e.pageY)
-		onWhack(pointsRef.current, pointsRef.current > constants.GOLDEN_SCORE * 0.5)
+		onWhack(pointsRef.current, pointsRef.current > GAME.GOLDEN_SCORE * 0.5)
 	}
 
 	// Much of what is rendered is the Mole SVG and the Hole.

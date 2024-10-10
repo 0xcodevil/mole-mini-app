@@ -2,7 +2,7 @@ import { Fragment, useState, useRef } from "react";
 import confetti from "canvas-confetti"
 import gsap from 'gsap';
 
-import constants from "./constants";
+import { GAME } from "@/libs/constants";
 import { useAudio, usePersistentState } from "./hooks";
 import StartScreen from "./StartScreen";
 import CountDown from "./CountDown";
@@ -15,10 +15,10 @@ import FinishScreen from "./FullScreen";
 import "./game.css";
 
 const generateMoles = () =>
-	new Array(constants.MOLES).fill(0).map(() => ({
+	new Array(GAME.MOLES).fill(0).map(() => ({
 		speed: gsap.utils.random(0.5, 2),
 		delay: gsap.utils.random(0.5, 5),
-		points: constants.MOLE_SCORE,
+		points: GAME.NORMAL_SCORE,
 	}))
 
 const Game = () => {
@@ -171,7 +171,7 @@ const Game = () => {
 					))}
 				</div>
 			</main>
-			<Timer started={playing} time={constants.TIME_LIMIT} onEnd={endGame} />
+			<Timer started={playing} time={GAME.TIME_LIMIT} onEnd={endGame} />
 			{/* Finished */}
 			{finished && (
 				<FinishScreen

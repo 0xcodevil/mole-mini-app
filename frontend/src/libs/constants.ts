@@ -1,3 +1,17 @@
+export const GAME = {
+	MOLES: 12,
+	TIME_LIMIT: 60000,
+	TIME_MULTIPLIER: 1.2,
+	POINTS_MULTIPLIER: 0.9,
+	NORMAL_SCORE: 10,
+	SPECIAL_SCORE: 20,
+	GOLDEN_SCORE: 100,
+	BOMB_SCORE: -100,
+	GOLDEN_CHANCE: 0.05,
+	BOMB_CHANCE: 0.35,
+	SPECIAL_CHANCE: 0.55,
+}
+
 export const LINK = {
     TELEGRAM_MINIAPP: 'https://t.me/SmashMoleBot/play',
     TELEGRAM_GROUP: 'https://t.me/test',
@@ -12,27 +26,6 @@ export const LINK = {
 export const ROLE = {
     ADMIN: 'admin',
     USER: 'user'
-}
-
-export const GAME = {
-    "easy": {
-        FALL_TIME: 3000,
-        FALL_INTERVAL: 300,
-        FROZEN_TIME: 2000,
-        DURATION: 30 * 1000
-    },
-    "medium": {
-        FALL_TIME: 2000,
-        FALL_INTERVAL: 200,
-        FROZEN_TIME: 1500,
-        DURATION: 60 * 1000
-    },
-    "hard": {
-        FALL_TIME: 1000,
-        FALL_INTERVAL: 100,
-        FROZEN_TIME: 1000,
-        DURATION: 3 * 60 * 1000
-    },
 }
 
 export const OWNER_ADDRESS = "UQBQEH26BFekzAAJ_65kXS1ZNlPu_PEahzFIaI65XMWjvM67";
