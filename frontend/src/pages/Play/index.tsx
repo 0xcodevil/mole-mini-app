@@ -1,7 +1,10 @@
-import { Fragment, useState, useRef } from "react";
-import confetti from "canvas-confetti"
+import { Fragment, useState, useRef, useEffect } from "react";
+import { useInitData } from "@telegram-apps/sdk-react";
 import gsap from 'gsap';
+import confetti from "canvas-confetti"
+import Countdown from "react-countdown";
 
+import API from "@/libs/API";
 import { GAME } from "@/libs/constants";
 import { useAudio, usePersistentState } from "./hooks";
 import StartScreen from "./StartScreen";
@@ -14,48 +17,33 @@ import FinishScreen from "./FullScreen";
 
 import "./game.css";
 
-const generateMoles = () =>
+const generateMoles = (boosted = false) =>
 	new Array(GAME.MOLES).fill(0).map(() => ({
 		speed: gsap.utils.random(0.5, 2),
 		delay: gsap.utils.random(0.5, 5),
 		points: GAME.NORMAL_SCORE,
+		boosted
 	}))
 
 const Game = () => {
-	const { play: playCount } = useAudio(
-		'/mp3/countdown-beep.mp3'
-	)
-	const { play: playWhack } = useAudio(
-		'/mp3/pop.mp3'
-	)
-	const { play: playSqueak } = useAudio(
-		'/mp3/squeak-in.mp3'
-	)
-	const { play: playSqueakOut } = useAudio(
-		'/mp3/squeak-out.mp3'
-	)
-	const { play: playCheer } = useAudio(
-		'/mp3/kids-cheering.mp3'
-	)
-	const { play: playThud } = useAudio(
-		'/mp3/thud--small.mp3',
-		0.65
-	)
-	const { play: playWhistle } = useAudio(
-		'/mp3/whistle.mp3',
-		0.65
-	)
-	const { play: playSparkle } = useAudio(
-		'/mp3/sparkle.mp3'
-	)
-	const { play: playClick } = useAudio(
-		'/mp3/click.mp3'
-	)
+	const initData = useInitData();
+
+	const { play: playCount } = useAudio('/mp3/countdown-beep.mp3')
+	const { play: playWhack } = useAudio('/mp3/pop.mp3')
+	const { play: playSqueak } = useAudio('/mp3/squeak-in.mp3')
+	const { play: playSqueakOut } = useAudio('/mp3/squeak-out.mp3')
+	const { play: playCheer } = useAudio('/mp3/kids-cheering.mp3')
+	const { play: playThud } = useAudio('/mp3/thud--small.mp3', 0.65)
+	const { play: playWhistle } = useAudio('/mp3/whistle.mp3', 0.65)
+	const { play: playSparkle } = useAudio('/mp3/sparkle.mp3')
+	const { play: playClick } = useAudio('/mp3/click.mp3')
+
 	const [moles, setMoles] = useState(generateMoles())
 	const [playing, setPlaying] = useState(false)
 	const [starting, setStarting] = useState(false)
 	const [finished, setFinished] = useState(false)
 	const [score, setScore] = useState(0)
+    const [boosted, setEndTime] = useState('')
 	const [newHighScore, setNewHighScore] = useState(false)
 	const [muted,] = usePersistentState('whac-muted', true)
 	const [highScore, setHighScore] = usePersistentState('whac-high-score', 0)
@@ -108,7 +96,7 @@ const Game = () => {
 		if (!muted) playClick()
 		setScore(0)
 		setNewHighScore(false)
-		setMoles(generateMoles())
+		setMoles(generateMoles(!!boosted))
 		setStarting(false)
 		setPlaying(false)
 		setFinished(false)
@@ -118,13 +106,28 @@ const Game = () => {
 		if (!muted) playClick()
 		setScore(0)
 		setNewHighScore(false)
-		setMoles(generateMoles())
+		setMoles(generateMoles(!!boosted))
 		setStarting(true)
 		setFinished(false)
 	}
 
+	useEffect(() => {
+		API.get('/users/boost/getmy/' + initData?.user?.id).then(res => {
+            res.data.success && setEndTime(res.data.boost.endTime);
+        }).catch(console.error);
+	}, [])
+
 	return (
 		<Fragment>
+			{
+                boosted ? <Countdown
+                    date={boosted}
+                    intervalDelay={1000}
+                    precision={3}
+                    onComplete={() => setEndTime('')}
+                    renderer={(props) => <div className="absolute font-poppins text-[10px] top-[3px] left-[10px]">Boost&nbsp;&nbsp;{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</div>}
+                /> : null
+            }
 			{/* Fresh */}
 			{!starting && !playing && !finished && (
 				<StartScreen onStart={startGame} />
@@ -167,6 +170,7 @@ const Game = () => {
 							delay={delay}
 							points={points}
 							loading={id === 2 && !starting && !playing && !finished}
+							boosted={!!boosted}
 						/>
 					))}
 				</div>

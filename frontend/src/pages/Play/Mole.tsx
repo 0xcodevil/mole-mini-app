@@ -10,6 +10,7 @@ interface MoleProps {
 	delay: number;
 	points: number;
 	pointsMin?: number;
+	boosted: boolean;
 }
 
 const Mole = ({
@@ -20,6 +21,7 @@ const Mole = ({
 	delay,
 	points,
 	pointsMin = 10,
+	boosted
 }: MoleProps) => {
 	const [image, setImage] = useState('mole-0.png');
 	const [whacked, setWhacked] = useState(false)
@@ -41,6 +43,7 @@ const Mole = ({
 		}
 
 		let random = Math.random()
+		console.log(random);
 		if (random < GAME.GOLDEN_CHANCE) {
 			// Create the "Golden" Mole
 			pointsRef.current = GAME.GOLDEN_SCORE
@@ -152,7 +155,7 @@ const Mole = ({
 		SCORE_HOLDER.className = 'mole__points-holder'
 		const SCORE = document.createElement('div')
 		SCORE.className = 'mole__points'
-		SCORE.innerText = pointsRef.current.toString()
+		SCORE.innerText = pointsRef.current.toString() + (boosted ? 'x2' : '')
 		SCORE_HOLDER.appendChild(SCORE)
 		document.body.appendChild(SCORE_HOLDER)
 		gsap.set(SCORE_HOLDER, {
@@ -189,7 +192,7 @@ const Mole = ({
 	const whack = (e: MouseEvent) => {
 		setWhacked(true)
 		renderScore(e.pageX, e.pageY)
-		onWhack(pointsRef.current, pointsRef.current > GAME.GOLDEN_SCORE * 0.5)
+		onWhack(boosted ? pointsRef.current * 2 : pointsRef.current, pointsRef.current > GAME.GOLDEN_SCORE * 0.5)
 	}
 
 	// Much of what is rendered is the Mole SVG and the Hole.
