@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useInitData } from '@telegram-apps/sdk-react';
-import { useTonWallet, useTonConnectUI, CHAIN, useTonAddress } from '@tonconnect/ui-react';
+import { useTonWallet, useTonConnectUI, CHAIN } from '@tonconnect/ui-react';
 import { toast } from 'react-toastify';
+import Countdown from 'react-countdown';
 
 import API from '@/libs/API';
-import Countdown from 'react-countdown';
 import Footer from "@/components/Footer";
 import { OWNER_ADDRESS, IS_MAINNET } from "@/libs/constants";
 
@@ -12,13 +12,12 @@ const Boost = () => {
     const initData = useInitData();
 
     const wallet = useTonWallet();
-    const tonAddress = useTonAddress(true);
     const [tonConnectUI, ] = useTonConnectUI();
 
     const [items, setItems] = useState<any>([]);
-    const [totalPrice, setTotalPrice] = useState({usersCount: 0, price: 0});
-    const [totalUsers, setTotalUsers] = useState(0);
-    const [purchasedItem, setPurchasedItem] = useState();
+    // const [totalPrice, setTotalPrice] = useState({usersCount: 0, price: 0});
+    // const [totalUsers, setTotalUsers] = useState(0);
+    const [purchasedItem, setPurchasedItem] = useState<any>();
     const [endTime, setEndTime] = useState(0);
 
     useEffect(() => {
@@ -34,7 +33,7 @@ const Boost = () => {
                     setEndTime(res.data.boost.endTime);
                 }
                 if (res.data.success || res.data.status == 'noboost') {
-                    setTotalPrice(res.data.total);
+                    // setTotalPrice(res.data.total);
                 }
             }).catch(err => {
                 toast.error('Something went wrong.');
@@ -74,8 +73,8 @@ const Boost = () => {
                     toast.success(res.data.msg);
                     setPurchasedItem(items?.find((i: any) => i._id === item._id));
                     setEndTime(res.data.boost.endTime);
-                    setTotalUsers(prev => prev + 1);
-                    setTotalPrice(prev => prev + res.data.boost.item.price);
+                    // setTotalUsers(prev => prev + 1);
+                    // setTotalPrice(prev => prev + res.data.boost.item.price);
                 } else {
                     toast.error(res.data.msg);
                 }
@@ -97,7 +96,13 @@ const Boost = () => {
                         <div className="font-lemon text-[13px] tracking-tighter">{ item.name }</div>
                         <div className="flex justify-between">
                             <p className="font-poppins text-[8px] w-[150px]">{ item.title }</p>
-                            <button onClick={() => handlePayment(item)} className="w-[45px] h-[18px] rounded-[6px] bg-gradient-to-b from-[#6700B0] to-[#00BFE1] font-poppins font-bold text-[6px]">Claim</button>
+                            {
+                                purchasedItem ? 
+                                <button onClick={() => handlePayment(item)} className="w-[45px] h-[18px] rounded-[6px] bg-gradient-to-b from-[#6700B0] to-[#00BFE1] font-poppins font-bold text-[6px]">
+                                    { purchasedItem._id === item._id ? <Countdown date={endTime} intervalDelay={1000} precision={3} onComplete={() => setPurchasedItem(null)} renderer={(props) => <span>{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</span>} /> : '---' }
+                                </button> :
+                                <button onClick={() => handlePayment(item)} className="w-[45px] h-[18px] rounded-[6px] bg-gradient-to-b from-[#6700B0] to-[#00BFE1] font-poppins font-bold text-[6px]">Claim</button>
+                            }
                         </div>
                     </div>
                 </div>))

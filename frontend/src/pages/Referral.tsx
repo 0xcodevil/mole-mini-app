@@ -4,8 +4,7 @@ import { useTonWallet, useTonConnectModal } from '@tonconnect/ui-react';
 
 import API from "@/libs/API";
 import Footer from "@/components/Footer";
-import Link from "@/components/Link";
-import { LINK, PLATFORM } from "@/libs/constants";
+import { LINK } from "@/libs/constants";
 import { toast } from 'react-toastify';
 import { Modal, Placeholder, Button } from '@telegram-apps/telegram-ui';
 
@@ -122,15 +121,15 @@ const Referral = () => {
         utils.openTelegramLink(LINK.TELEGRAM_CHANNEL);
     }
 
-    const handleXLink = () => {
-        API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.X }).catch(console.error);
-        utils.openLink(LINK.X);
-    }
+    // const handleXLink = () => {
+    //     API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.X }).catch(console.error);
+    //     utils.openLink(LINK.X);
+    // }
 
-    const handleYoutubeLink = () => {
-        API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.YOUTUBE }).catch(console.error);
-        utils.openLink(LINK.YOUTUBE);
-    }
+    // const handleYoutubeLink = () => {
+    //     API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.YOUTUBE }).catch(console.error);
+    //     utils.openLink(LINK.YOUTUBE);
+    // }
 
     // const handleInviteFiveFriends = () => {
     //     API.post('/users/invite/task', { userid: initData?.user?.id, count: 5 }).then(res => {

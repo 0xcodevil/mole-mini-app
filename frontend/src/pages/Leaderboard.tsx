@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInitData } from "@telegram-apps/sdk-react";
 import API from '@/libs/API';
 import Avatar from '@/components/Avatar';
@@ -8,29 +8,29 @@ const Leaderboard = () => {
     const initData = useInitData();
 
     const [users, setUsers] = useState<any[]>([]);
-    const [type, setType] = useState("total");
+    // const [type, setType] = useState("total");
     const [selfRank, setSelfRank] = useState(-1);
-    const [self, setSelf] = useState<any>(null);
+    // const [self, setSelf] = useState<any>(null);
 
     const [userCount, setUserCount] = useState(0);
-    const [isCounting, setCounting] = useState(false);
+    // const [isCounting, setCounting] = useState(false);
 
     useEffect(() => {
         API.get('/users/count/all')
             .then(res => {
                 setUserCount(res.data.count);
-                setCounting(true);
+                // setCounting(true);
             })
             .catch(console.error);
     }, []);
     useEffect(() => {
-        API.get(`/users/ranking/${initData?.user?.id}/${type}`)
+        API.get(`/users/ranking/${initData?.user?.id}/total`)
             .then(res => {
                 setUsers(res.data.users);
                 setSelfRank(res.data.rank);
-                setSelf(res.data.self);
+                // setSelf(res.data.self);
             }).catch(console.error);
-    }, [type])
+    }, [])
 
     // const handleClickType = (type: "total" | "week") => (e: MouseEvent) => {
     //     e.preventDefault();
