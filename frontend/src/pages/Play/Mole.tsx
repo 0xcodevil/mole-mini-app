@@ -20,7 +20,7 @@ const Mole = ({
 	speed,
 	delay,
 	points,
-	pointsMin = 10,
+	pointsMin = 1,
 	boosted
 }: MoleProps) => {
 	const [image, setImage] = useState('mole-0.png');
@@ -78,7 +78,7 @@ const Mole = ({
 				yPercent: 0,
 				duration: speed,
 				yoyo: true,
-				repeat: -1,
+				repeat: 1,
 				delay,
 				repeatDelay: delay,
 				onRepeat: () => {
@@ -86,6 +86,9 @@ const Mole = ({
 					pointsRef.current = Math.floor(
 						Math.max(pointsRef.current * GAME.POINTS_MULTIPLIER, pointsMin)
 					)
+				},
+				onComplete: () => {
+					setWhacked(true);
 				},
 			})
 		}
