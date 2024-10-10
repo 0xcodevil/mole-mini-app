@@ -64,7 +64,7 @@ const botStart = async () => {
         await ctx.replyWithPhoto(
             process.env.BOT_LOGO,
             {
-                caption: 'welcome to cat point',
+                caption: 'welcome to mole mash mini app',
                 reply_markup: keyboard,
             }
         );
