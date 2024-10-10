@@ -17,11 +17,11 @@ const Referral = () => {
 
     const [isConnectedWallet, setConnectedWallet] = useState(false);
     // const [dailyRemainSecond, setDailyRemainSecond] = useState(0);
-    const [isJoinedTelegramGroup, setJoinedTelegramGroup] = useState(false);
+    // const [isJoinedTelegramGroup, setJoinedTelegramGroup] = useState(false);
     const [isJoinedTelegramChannel, setJoinedTelegramChannel] = useState(false);
-    const [isRetweetX, setRetweetX] = useState(false);
+    // const [isRetweetX, setRetweetX] = useState(false);
     // const [isFollowingYouTube, setFollowingYouTube] = useState(false);
-    // const [isFollowingX, setFollowingX] = useState(false);
+    const [isFollowingX, setFollowingX] = useState(false);
     // const [isInviteFive, setInviteFive] = useState(false);
     // const [dailyReward, setDailyReward] = useState(100);
     const [dailyRemainSecond, setDailyRemainSecond] = useState(0);
@@ -42,7 +42,6 @@ const Referral = () => {
     }
 
     const handleClaimDailyReward = (status = 0) => {
-        console.log('ksdflksjdfl');
         API.post(`/users/claim/daily`, { userid: initData?.user?.id, status }).then(res => {
             if (res.data.success) {
                 setDailyRemainSecond(res.data.ms);
@@ -56,23 +55,24 @@ const Referral = () => {
         }).catch(console.error);
     }
 
-    const handleRetweetX = () => {
-        API.post('/users/tweet', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
-            if(res.data.success) {
-                setRetweetX(true);
-                toast.success(res.data.msg);
-            }
-            else toast.error(res.data.msg);
-        }).catch(err => console.error(err));
-    }
+    // const handleRetweetX = () => {
+    //     API.post('/users/tweet', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
+    //         if(res.data.success) {
+    //             setRetweetX(true);
+    //             toast.success(res.data.msg);
+    //         }
+    //         else toast.error(res.data.msg);
+    //     }).catch(err => console.error(err));
+    // }
 
     useEffect(() => {
         API.get(`/users/get/${initData?.user?.id}`).then(res => {
-            // setFollowingX(res.data.xFollowed);
-            // setFollowingYouTube(res.data.youtubeSubscribed);
+            setConnectedWallet(res.data.walletConnected);
+            setFollowingX(res.data.xFollowed);
             setJoinedTelegramChannel(res.data.telegramChannelJoined);
-            setJoinedTelegramGroup(res.data.telegramGroupJoined);
-            setRetweetX(res.data.xTweet);
+            // setFollowingYouTube(res.data.youtubeSubscribed);
+            // setJoinedTelegramGroup(res.data.telegramGroupJoined);
+            // setRetweetX(res.data.xTweet);
             // setInviteFive(res.data.inviteFive);
         }).catch(console.error);
         handleClaimDailyReward();
@@ -92,19 +92,19 @@ const Referral = () => {
     //     }).catch(console.error);
     // }
 
-    const handleJoinTelegramGroup = () => {
-        API.post('/users/jointg', {
-            userid: initData?.user?.id,
-            type: 'group'
-        }).then(res => {
-            if (res.data.success) {
-                setJoinedTelegramGroup(true);
-                // setOpenGroupModal(false);
-                toast.success(res.data.msg);
-            }
-            else toast.error(res.data.msg);
-        }).catch(console.error);
-    }
+    // const handleJoinTelegramGroup = () => {
+    //     API.post('/users/jointg', {
+    //         userid: initData?.user?.id,
+    //         type: 'group'
+    //     }).then(res => {
+    //         if (res.data.success) {
+    //             setJoinedTelegramGroup(true);
+    //             // setOpenGroupModal(false);
+    //             toast.success(res.data.msg);
+    //         }
+    //         else toast.error(res.data.msg);
+    //     }).catch(console.error);
+    // }
 
     const handleJoinTelegramChannel = () => {
         API.post('/users/jointg', {
@@ -120,16 +120,16 @@ const Referral = () => {
         }).catch(console.error);
     }
 
-    // const handleFollowX = () => {
-    //     API.post('/users/followx', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
-    //         if (res.data.success) {
-    //             setFollowingX(true);
-    //             // setOpenFollowXModal(false);
-    //             toast.success(res.data.msg);
-    //         }
-    //         else toast.error(res.data.msg);
-    //     }).catch(console.error);
-    // }
+    const handleFollowX = () => {
+        API.post('/users/followx', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
+            if (res.data.success) {
+                setFollowingX(true);
+                // setOpenFollowXModal(false);
+                toast.success(res.data.msg);
+            }
+            else toast.error(res.data.msg);
+        }).catch(console.error);
+    }
 
     // const handleFollowYoutube = () => {
     //     API.post('/users/subscribe_youtube', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
@@ -142,23 +142,23 @@ const Referral = () => {
     //     }).catch(console.error);
     // }
 
-    const handleTGGroupLink = () => {
-        utils.openTelegramLink(LINK.TELEGRAM_GROUP);
-    }
+    // const handleTGGroupLink = () => {
+    //     utils.openTelegramLink(LINK.TELEGRAM_GROUP);
+    // }
 
     const handleTGChannelLink = () => {
         utils.openTelegramLink(LINK.TELEGRAM_CHANNEL);
     }
     
-    const handleRetweetXLink = () => {
-        API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.TWEET }).catch(console.error);
-        utils.openLink(LINK.TWEET);
-    }
-
-    // const handleXLink = () => {
-    //     API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.X }).catch(console.error);
-    //     utils.openLink(LINK.X);
+    // const handleRetweetXLink = () => {
+    //     API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.TWEET }).catch(console.error);
+    //     utils.openLink(LINK.TWEET);
     // }
+
+    const handleXLink = () => {
+        API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.X }).catch(console.error);
+        utils.openLink(LINK.X);
+    }
 
     // const handleYoutubeLink = () => {
     //     API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.YOUTUBE }).catch(console.error);
@@ -193,7 +193,7 @@ const Referral = () => {
                 </div>
                 <button disabled={isConnectedWallet} onClick={handleConnectWallet} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>
             </div>
-            <div className="mt-[14px] relative flex justify-between items-center py-5 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
+            {/* <div className="mt-[14px] relative flex justify-between items-center py-5 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
                 <div className="flex items-center gap-3">
                     <img className="w-[27px] h-[27px]" src="/imgs/telegram.png" alt="" />
                     <div>
@@ -208,7 +208,7 @@ const Referral = () => {
                     trigger={<button disabled={isJoinedTelegramGroup} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
-                        header="Follow TG Chat"
+                        header={<span className="text-black dark:text-white">Join our TG chat</span>}
                         action={
                             <Fragment>
                                 <Button onClick={handleTGGroupLink} size="m" stretched>Follow</Button>
@@ -217,7 +217,7 @@ const Referral = () => {
                         }
                     />
                 </Modal>
-            </div>
+            </div> */}
             <div className="mt-[14px] relative flex justify-between items-center py-5 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
                 <div className="flex items-center gap-3">
                     <img className="w-[27px] h-[27px]" src="/imgs/telegram.png" alt="" />
@@ -233,7 +233,7 @@ const Referral = () => {
                     trigger={<button disabled={isJoinedTelegramChannel} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
-                        header="Join our TG channel"
+                        header={<span className="text-black dark:text-white">Join our TG channel</span>}
                         action={
                             <Fragment>
                                 <Button onClick={handleTGChannelLink} size="m" stretched>Join</Button>
@@ -243,30 +243,59 @@ const Referral = () => {
                     />
                 </Modal>
             </div>
+            <div className="mt-[10px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+                <div className="flex items-center gap-3">
+                    <img className="w-[26px] h-[26px]" src="/imgs/twitter.png" alt="" />
+                    <div>
+                        <div className="font-lemon text-[13px]">Follow our Twitter</div>
+                        <div className="flex items-center gap-1">
+                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">1000 Token</span></div>
+                        </div>
+                    </div>
+                </div>
+                <Modal
+                    header={<Modal.Header />}
+                    trigger={<button disabled={isFollowingX} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
+                >
+                    <Placeholder
+                        header={<span className="text-black dark:text-white">Follow our Twitter</span>}
+                        action={
+                            <Fragment>
+                                <Button onClick={handleXLink} size="m" stretched>Follow</Button>
+                                <Button onClick={handleFollowX} size="m" stretched>Complete</Button>
+                            </Fragment>
+                        }
+                    />
+                </Modal>
+            </div>
             <div className="relative flex items-center gap-4 my-[34px]">
                 <img className="w-9 h-[61px] -scale-x-100" src="/imgs/coins.png" alt="" />
                 <h1 className="font-margarine text-[34px]">Daily Tasks</h1>
             </div>
-            <div className="mt-[25px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+            <div className="mt-3 w-full relative flex items-center gap-[7px] pl-[21px] py-[15px] pr-[9px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <img src="/imgs/mole.png" alt="" className="absolute top-0 right-0 w-16 h-20 -translate-y-16" />
-                <div className="flex items-center gap-3">
-                    <img className="w-[26px] h-[26px]" src="/imgs/reward.png" alt="" />
-                    <div>
+                <img src="/imgs/reward.png" alt="" className="w-[48px] h-[48px]" />
+                <div className="flex-1">
+                    <div className="flex justify-between">
                         <div className="font-lemon text-[13px]">Daily Reward</div>
-                        <div className="flex items-center gap-1">
-                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">{dailyReward} Token</span></div>
+                        <div className="flex gap-[7px]">
+                            <button className="flex items-center justify-center gap-1 w-[59px] h-[25px] rounded-[6px] bg-[#FEFEFE33]">
+                                <img src="/imgs/coin.png" alt="" className="w-[8px]" />
+                                <span className="font-poppins font-bold text-[10px]">+{dailyReward}</span>
+                            </button>
+                            {
+                                dailyRemainSecond > 0 ?
+                                <button disabled={true} className="w-[59px] h-[25px] rounded-[6px] bg-gradient-to-b from-[#6700B0] to-[#00BFE1] font-poppins font-bold text-[10px]">
+                                    <Countdown date={Date.now() + dailyRemainSecond} intervalDelay={1000} precision={3} onComplete={() => setDailyRemainSecond(0)} renderer={(props) => <span>{props.hours.toString().padStart(2, '0')} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</span>} />
+                                </button> :
+                                <button onClick={() => handleClaimDailyReward(1)} className="w-[59px] h-[25px] rounded-[6px] bg-gradient-to-b from-[#6700B0] to-[#00BFE1] font-poppins font-bold text-[10px]">Claim</button>
+                            }
                         </div>
                     </div>
+                    <div className="font-poppins text-[8px]">Each day brings you more coins</div>
                 </div>
-                {
-                    dailyRemainSecond > 0 ?
-                        <button disabled={true} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">
-                            <Countdown date={Date.now() + dailyRemainSecond} intervalDelay={1000} precision={3} onComplete={() => setDailyRemainSecond(0)} renderer={(props) => <span>{props.hours.toString().padStart(2, '0')} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</span>} />
-                        </button> :
-                        <button onClick={() => handleClaimDailyReward(1)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>
-                }
             </div>
-            <div className="mt-[10px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+            {/* <div className="mt-[10px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <div className="flex items-center gap-3">
                     <img className="w-[26px] h-[26px]" src="/imgs/twitter.png" alt="" />
                     <div>
@@ -281,7 +310,7 @@ const Referral = () => {
                     trigger={<button disabled={isRetweetX} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
-                        header="Retweet our blog"
+                        header={<span className="text-black dark:text-white">Retweet our blog</span>}
                         action={
                             <Fragment>
                                 <Button onClick={handleRetweetXLink} size="m" stretched>Retweet</Button>
@@ -290,7 +319,7 @@ const Referral = () => {
                         }
                     />
                 </Modal>
-            </div>
+            </div> */}
             <div className="absolute w-[500px] top-[50px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_0%,#00000000_50%)]" />
             <Footer />
         </div>
