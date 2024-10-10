@@ -1,0 +1,24 @@
+{
+  "name": "mole-smash",
+  "version": "1.0.0",
+  "description": "Mole Smash",
+  "scripts": {
+    "postinstall": "cd frontend && npm install && cd ../backend && npm install",
+    "prestart": "npm run build",
+    "start": "npm start --prefix backend",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "frontend": "npm run dev --prefix frontend",
+    "backend": "npm run dev --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "bot": "npm run bot --prefix backend",
+    "dev:bot": "npm run dev:bot --prefix backend"
+  },
+  "keywords": [
+    "mole"
+  ],
+  "author": "supercoolx",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

@@ -1,0 +1,11 @@
+const constants = {
+	TIME_LIMIT: 30000,
+	MOLE_SCORE: 100,
+	POINTS_MULTIPLIER: 0.9,
+	TIME_MULTIPLIER: 1.2,
+	MOLES: 12,
+	REGULAR_SCORE: 100,
+	GOLDEN_SCORE: 1000,
+}
+
+export default constants;
