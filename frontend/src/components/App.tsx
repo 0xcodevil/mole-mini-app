@@ -18,6 +18,7 @@ import {
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
+import AppProvider from '@/providers/AppProvider';
 import { routes } from '@/navigation/routes.tsx';
 
 export const App: FC = () => {
@@ -55,12 +56,14 @@ export const App: FC = () => {
       appearance={miniApp.isDark ? 'dark' : 'light'}
       platform={['macos', 'ios'].includes(lp.platform) ? 'ios' : 'base'}
     >
-      <Router location={location} navigator={reactNavigator}>
-        <Routes>
-          {routes.map((route) => <Route key={route.path} {...route} />)}
-          <Route path='*' element={<Navigate to='/'/>}/>
-        </Routes>
-      </Router>
+      <AppProvider>
+        <Router location={location} navigator={reactNavigator}>
+          <Routes>
+            {routes.map((route) => <Route key={route.path} {...route} />)}
+            <Route path='*' element={<Navigate to='/' />} />
+          </Routes>
+        </Router>
+      </AppProvider>
       <ToastContainer position="top-center" autoClose={3000} theme="dark" />
     </AppRoot>
   );

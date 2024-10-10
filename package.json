@@ -18,7 +18,7 @@
   ],
   "author": "supercoolx",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "concurrently": "^9.0.1"
   }
 }
