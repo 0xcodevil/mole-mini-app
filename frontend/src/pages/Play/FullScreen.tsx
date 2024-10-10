@@ -1,15 +1,34 @@
+import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useInitData } from "@telegram-apps/sdk-react";
+
+import API from "@/libs/API";
 
 interface FinishScreenProps {
-    newHigh: boolean;
-    onRestart: () => any;
-    onReset: () => any;
-    result: number;
+	newHigh: boolean;
+	onRestart: () => any;
+	onReset: () => any;
+	result: number;
 }
 
 const FinishScreen = ({ newHigh, onRestart, result }: FinishScreenProps) => {
-	if (newHigh) toast.success(`New High Score. You Scored ${result}.`);
-	else toast.success(`You Scored ${result}.`);
+	const initData = useInitData();
+	useEffect(() => {
+		if (!result) return;
+		API.post('/play/result', { userid: initData?.user?.id, point: result })
+			.then(res => {
+				if (res.data.success) {
+					if (newHigh) toast.success(`New High Score. You Scored ${result}.`);
+					else toast.success(`You Scored ${result}.`);
+				} else {
+					toast.error(res.data.msg);
+				}
+			}).catch(err => {
+				console.error(err);
+				toast.error(err.message);
+			});
+
+	}, [result]);
 
 	return (
 		<div className="z-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[272px] rounded-[17px] bg-[#FF02D542] border border-[#C400FA] flex flex-col justify-end items-center pb-[60px]">

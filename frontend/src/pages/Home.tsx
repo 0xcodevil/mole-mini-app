@@ -1,6 +1,9 @@
 import Link from "@/components/Link";
+import { useApp } from "@/providers/AppProvider";
 
 const Home = () => {
+    const app = useApp();
+
     return (
         <div className="w-screen flex flex-col items-center justify-between overflow-hidden bg-[url('/imgs/home-background.png')] bg-contain bg-no-repeat bg-center bg-fixed pt-[57px] pb-[67px]">
             <h1 className="text-center font-margarine text-[40px]">Mole Smash</h1>
@@ -12,16 +15,19 @@ const Home = () => {
                 <img className="w-[238px] h-[230px]" src="/imgs/home.png" alt="" />
             </div>
             <Link to="/play" className="mt-[34px] flex items-center justify-center w-[160px] h-[50px] rounded-full border-2 border-[#F9E813] text-[22px] font-lily shadow-[0_0_10px_#F9E813] hover:shadow-[0_4px_10px_#F9E813] transition-all duration-200 hover:-translate-y-1">Get Started</Link>
-            <p className="font-lemon text-[14px] mt-[24px]">Loading...</p>
+            {/* <p className="font-lemon text-[14px] mt-[24px]">Loading...</p> */}
             <div className="mt-[82px] flex flex-col items-center">
                 <div className="relative z-10 flex gap-[38px]">
                     <Link to="/leaderboard" className="transition-all duration-200 hover:-translate-y-1">
                         <img className="w-[57px] h-[57px]" src="/imgs/leaderboard.png" alt="" />
                     </Link>
-                    <button className="translate-y-[9px] hover:translate-y-0 transition-all duration-200">
-                        <img className="w-[57px] h-[57px]" src="/imgs/music.png" alt="" />
+                    <button onClick={app?.toggleMusic} className="translate-y-[9px] hover:translate-y-0 transition-all duration-200">
+                        {app?.volume === "on" ?
+                            <img className="w-[57px] h-[57px]" src="/imgs/music.png" alt="" /> :
+                            <img className="w-[57px] h-[57px]" src="/imgs/music-muted.png" alt="" />
+                        }
                     </button>
-                    <Link to="/info" className="transition-all duration-200 hover:-translate-y-1">
+                    <Link to="/referral" className="transition-all duration-200 hover:-translate-y-1">
                         <img className="w-[57px] h-[57px]" src="/imgs/info.png" alt="" />
                     </Link>
                 </div>
