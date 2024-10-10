@@ -49,7 +49,7 @@ const botStart = async () => {
         }
         
         play_url = process.env.APP_URL;
-        const link = `${process.env.BOT_LINK}?start=${userid}`;
+        const link = `${process.env.BOT_LINK}?startapp=${userid}`;
         const shareText = 'Join our telegram mini app.';
         const invite_fullUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(shareText)}`;
 
