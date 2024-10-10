@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useInitData } from "@telegram-apps/sdk-react";
-import Countdown from 'react-countdown';
-import { toast } from 'react-toastify';
 
 import API from "@/libs/API";
 import Footer from "@/components/Footer";
@@ -10,30 +8,12 @@ import Link from "@/components/Link";
 const Earn = () => {
     const initData = useInitData();
     const [points, setPoints] = useState(0);
-    const [dailyRemainSecond, setDailyRemainSecond] = useState(0);
-    const [dailyReward, setDailyReward] = useState(500);
 
     useEffect(() => {
         API.get(`/users/get/${initData?.user?.id}`).then(res => {
             setPoints(res.data.point);
         }).catch(console.error);
-        handleClaimDailyReward();
     }, []);
-
-    const handleClaimDailyReward = (status = 0) => {
-        console.log('ksdflksjdfl');
-        API.post(`/users/claim/daily`, { userid: initData?.user?.id, status }).then(res => {
-            if (res.data.success) {
-                setDailyRemainSecond(res.data.ms);
-                setDailyReward(res.data.reward);
-                if (res.data.status == 'success') {
-                    toast.success('Claimed successfully.');
-                }
-            } else {
-                toast.error(res.data.msg);
-            }
-        }).catch(console.error);
-    }
 
     return (
         <div className="px-[43px] flex flex-col items-center overflow-y-auto pt-[6px] pb-[100px]">
@@ -55,30 +35,8 @@ const Earn = () => {
             </Link>
             <div className="mt-6 w-full relative flex justify-between items-center p-[18px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <img src="/imgs/point.png" alt="" className="w-[42px] h-[42px]" />
-                <span className="font-lemon text-[20px]">{points}</span>
+                <span className="font-lemon text-[20px]">{points.toLocaleString()}</span>
                 <span className="font-poppins text-[14px]">1000 / 1000</span>
-            </div>
-            <div className="mt-3 w-full relative flex items-center gap-[7px] pl-[21px] py-[15px] pr-[9px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
-                <img src="/imgs/reward.png" alt="" className="w-[48px] h-[48px]" />
-                <div className="flex-1">
-                    <div className="flex justify-between">
-                        <div className="font-lemon text-[13px]">Daily Reward</div>
-                        <div className="flex gap-[7px]">
-                            <button className="flex items-center justify-center gap-1 w-[59px] h-[25px] rounded-[6px] bg-[#FEFEFE33]">
-                                <img src="/imgs/coin.png" alt="" className="w-[8px]" />
-                                <span className="font-poppins font-bold text-[10px]">+{ dailyReward }</span>
-                            </button>
-                            {
-                                dailyRemainSecond > 0 ?
-                                <button className="flex items-center justify-center gap-1 w-[59px] h-[25px] rounded-[6px] bg-[#FEFEFE33] text-[10px]">
-                                    <Countdown date={Date.now() + dailyRemainSecond} intervalDelay={1000} precision={3} onComplete={() => setDailyRemainSecond(0)} renderer={(props) => <span className="text-primary">{props.hours.toString().padStart(2, '0')} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</span>} />
-                                </button> :
-                                <button onClick={() => handleClaimDailyReward(1)} className="w-[59px] h-[25px] rounded-[6px] bg-gradient-to-b from-[#6700B0] to-[#00BFE1] font-poppins font-bold text-[10px]">Claim</button>
-                            }
-                        </div>
-                    </div>
-                    <div className="font-poppins text-[8px]">Each day brings you more coins</div>
-                </div>
             </div>
             <div className="absolute w-[500px] top-[80px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_-30%,#00000000_50%)]" />
             <div className="absolute w-[500px] -top-[150px] -left-[60%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_10%,#00000000_50%)]" />

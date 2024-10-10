@@ -1,10 +1,11 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useInitData, useUtils } from "@telegram-apps/sdk-react";
 import { useTonWallet, useTonConnectModal } from '@tonconnect/ui-react';
+import Countdown from 'react-countdown';
 
 import API from "@/libs/API";
 import Footer from "@/components/Footer";
-import { LINK } from "@/libs/constants";
+import { LINK, PLATFORM } from "@/libs/constants";
 import { toast } from 'react-toastify';
 import { Modal, Placeholder, Button } from '@telegram-apps/telegram-ui';
 
@@ -18,10 +19,13 @@ const Referral = () => {
     // const [dailyRemainSecond, setDailyRemainSecond] = useState(0);
     const [isJoinedTelegramGroup, setJoinedTelegramGroup] = useState(false);
     const [isJoinedTelegramChannel, setJoinedTelegramChannel] = useState(false);
+    const [isRetweetX, setRetweetX] = useState(false);
     // const [isFollowingYouTube, setFollowingYouTube] = useState(false);
     // const [isFollowingX, setFollowingX] = useState(false);
     // const [isInviteFive, setInviteFive] = useState(false);
     // const [dailyReward, setDailyReward] = useState(100);
+    const [dailyRemainSecond, setDailyRemainSecond] = useState(0);
+    const [dailyReward, setDailyReward] = useState(500);
 
     const handleConnectWallet = () => {
         if (isConnectedWallet) return;
@@ -37,6 +41,30 @@ const Referral = () => {
         }
     }
 
+    const handleClaimDailyReward = (status = 0) => {
+        console.log('ksdflksjdfl');
+        API.post(`/users/claim/daily`, { userid: initData?.user?.id, status }).then(res => {
+            if (res.data.success) {
+                setDailyRemainSecond(res.data.ms);
+                setDailyReward(res.data.reward);
+                if (res.data.status == 'success') {
+                    toast.success('Claimed successfully.');
+                }
+            } else {
+                toast.error(res.data.msg);
+            }
+        }).catch(console.error);
+    }
+
+    const handleRetweetX = () => {
+        API.post('/users/tweet', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
+            if(res.data.success) {
+                setRetweetX(true);
+                toast.success(res.data.msg);
+            }
+            else toast.error(res.data.msg);
+        }).catch(err => console.error(err));
+    }
 
     useEffect(() => {
         API.get(`/users/get/${initData?.user?.id}`).then(res => {
@@ -44,9 +72,10 @@ const Referral = () => {
             // setFollowingYouTube(res.data.youtubeSubscribed);
             setJoinedTelegramChannel(res.data.telegramChannelJoined);
             setJoinedTelegramGroup(res.data.telegramGroupJoined);
+            setRetweetX(res.data.xTweet);
             // setInviteFive(res.data.inviteFive);
         }).catch(console.error);
-        // handleClaimDailyReward();
+        handleClaimDailyReward();
     }, [initData]);
 
     // const handleClaimDailyReward = (status = 0) => {
@@ -120,6 +149,11 @@ const Referral = () => {
     const handleTGChannelLink = () => {
         utils.openTelegramLink(LINK.TELEGRAM_CHANNEL);
     }
+    
+    const handleRetweetXLink = () => {
+        API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.TWEET }).catch(console.error);
+        utils.openLink(LINK.TWEET);
+    }
 
     // const handleXLink = () => {
     //     API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.X }).catch(console.error);
@@ -142,7 +176,7 @@ const Referral = () => {
     // }
 
     return (
-        <div className="px-[41px] pb-[100px] overflow-y-auto">
+        <div className="px-[41px] w-screen pb-[100px] overflow-y-auto">
             <div className="flex flex-col items-center mt-[6px]">
                 <div className="font-margarine text-[34px]">Earn More Coins</div>
                 <div className="font-madimi text-transparent bg-clip-text bg-[linear-gradient(to_right,#00D0FF,#FFDD00,#D400FF,#FF0099)]">Make our tasks to get more coins</div>
@@ -153,11 +187,11 @@ const Referral = () => {
                     <div>
                         <div className="font-lemon text-[13px]">Wallet Connect</div>
                         <div className="flex items-center gap-1">
-                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">100 Token</span></div>
+                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">1000 Token</span></div>
                         </div>
                     </div>
                 </div>
-                <button onClick={handleConnectWallet} className="text-[#6D04A1] text-[8px] font-poppins font-semibold bg-[#FFDD00] rounded-[5px] h-[25px] w-[69px]">Redeem</button>
+                <button disabled={isConnectedWallet} onClick={handleConnectWallet} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>
             </div>
             <div className="mt-[14px] relative flex justify-between items-center py-5 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
                 <div className="flex items-center gap-3">
@@ -165,13 +199,13 @@ const Referral = () => {
                     <div>
                         <div className="font-lemon text-[13px]">Join our TG Chat</div>
                         <div className="flex items-center gap-1">
-                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">300 Token</span></div>
+                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">1000 Token</span></div>
                         </div>
                     </div>
                 </div>
                 <Modal
                     header={<Modal.Header />}
-                    trigger={<button disabled={isJoinedTelegramGroup} className="text-[#6D04A1] text-[8px] font-poppins font-semibold bg-[#FFDD00] rounded-[5px] h-[25px] w-[69px]">Redeem</button>}
+                    trigger={<button disabled={isJoinedTelegramGroup} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
                         header="Follow TG Chat"
@@ -186,17 +220,17 @@ const Referral = () => {
             </div>
             <div className="mt-[14px] relative flex justify-between items-center py-5 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
                 <div className="flex items-center gap-3">
-                    <img className="w-[26px] h-[26px]" src="/imgs/twitter.png" alt="" />
+                    <img className="w-[27px] h-[27px]" src="/imgs/telegram.png" alt="" />
                     <div>
                         <div className="font-lemon text-[13px]">Join our TG channel</div>
                         <div className="flex items-center gap-1">
-                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">500 Token</span></div>
+                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">1000 Token</span></div>
                         </div>
                     </div>
                 </div>
                 <Modal
                     header={<Modal.Header />}
-                    trigger={<button disabled={isJoinedTelegramChannel} className="text-[#6D04A1] text-[8px] font-poppins font-semibold bg-[#FFDD00] rounded-[5px] h-[25px] w-[69px]">Redeem</button>}
+                    trigger={<button disabled={isJoinedTelegramChannel} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
                         header="Join our TG channel"
@@ -216,27 +250,46 @@ const Referral = () => {
             <div className="mt-[25px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <img src="/imgs/mole.png" alt="" className="absolute top-0 right-0 w-16 h-20 -translate-y-16" />
                 <div className="flex items-center gap-3">
-                    <img className="w-[26px] h-[26px]" src="/imgs/twitter.png" alt="" />
+                    <img className="w-[26px] h-[26px]" src="/imgs/reward.png" alt="" />
                     <div>
                         <div className="font-lemon text-[13px]">Daily Reward</div>
                         <div className="flex items-center gap-1">
-                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">900 Token</span></div>
+                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">{dailyReward} Token</span></div>
                         </div>
                     </div>
                 </div>
-                <button className="text-[#6D04A1] text-[8px] font-poppins font-semibold bg-[#FFDD00] rounded-[5px] h-[25px] w-[69px]">Redeem</button>
+                {
+                    dailyRemainSecond > 0 ?
+                        <button disabled={true} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">
+                            <Countdown date={Date.now() + dailyRemainSecond} intervalDelay={1000} precision={3} onComplete={() => setDailyRemainSecond(0)} renderer={(props) => <span>{props.hours.toString().padStart(2, '0')} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</span>} />
+                        </button> :
+                        <button onClick={() => handleClaimDailyReward(1)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>
+                }
             </div>
             <div className="mt-[10px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <div className="flex items-center gap-3">
-                    <img className="w-[27px] h-[27px]" src="/imgs/telegram.png" alt="" />
+                    <img className="w-[26px] h-[26px]" src="/imgs/twitter.png" alt="" />
                     <div>
-                        <div className="font-lemon text-[13px]">Daily Reward</div>
+                        <div className="font-lemon text-[13px]">Retweet our Blog</div>
                         <div className="flex items-center gap-1">
-                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">900 Token</span></div>
+                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">1000 Token</span></div>
                         </div>
                     </div>
                 </div>
-                <button className="text-[#6D04A1] text-[8px] font-poppins font-semibold bg-[#FFDD00] rounded-[5px] h-[25px] w-[69px]">Redeem</button>
+                <Modal
+                    header={<Modal.Header />}
+                    trigger={<button disabled={isRetweetX} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
+                >
+                    <Placeholder
+                        header="Retweet our blog"
+                        action={
+                            <Fragment>
+                                <Button onClick={handleRetweetXLink} size="m" stretched>Retweet</Button>
+                                <Button onClick={handleRetweetX} size="m" stretched>Complete</Button>
+                            </Fragment>
+                        }
+                    />
+                </Modal>
             </div>
             <div className="absolute w-[500px] top-[50px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_0%,#00000000_50%)]" />
             <Footer />
