@@ -19,7 +19,7 @@ const Referral = () => {
     // const [dailyRemainSecond, setDailyRemainSecond] = useState(0);
     // const [isJoinedTelegramGroup, setJoinedTelegramGroup] = useState(false);
     const [isJoinedTelegramChannel, setJoinedTelegramChannel] = useState(false);
-    // const [isRetweetX, setRetweetX] = useState(false);
+    const [isRetweetX, setRetweetX] = useState(false);
     // const [isFollowingYouTube, setFollowingYouTube] = useState(false);
     const [isFollowingX, setFollowingX] = useState(false);
     // const [isInviteFive, setInviteFive] = useState(false);
@@ -55,15 +55,15 @@ const Referral = () => {
         }).catch(console.error);
     }
 
-    // const handleRetweetX = () => {
-    //     API.post('/users/tweet', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
-    //         if(res.data.success) {
-    //             setRetweetX(true);
-    //             toast.success(res.data.msg);
-    //         }
-    //         else toast.error(res.data.msg);
-    //     }).catch(err => console.error(err));
-    // }
+    const handleRetweetX = () => {
+        API.post('/users/tweet', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
+            if(res.data.success) {
+                setRetweetX(true);
+                toast.success(res.data.msg);
+            }
+            else toast.error(res.data.msg);
+        }).catch(err => console.error(err));
+    }
 
     useEffect(() => {
         API.get(`/users/get/${initData?.user?.id}`).then(res => {
@@ -72,25 +72,11 @@ const Referral = () => {
             setJoinedTelegramChannel(res.data.telegramChannelJoined);
             // setFollowingYouTube(res.data.youtubeSubscribed);
             // setJoinedTelegramGroup(res.data.telegramGroupJoined);
-            // setRetweetX(res.data.xTweet);
+            setRetweetX(res.data.xTweet);
             // setInviteFive(res.data.inviteFive);
         }).catch(console.error);
         handleClaimDailyReward();
     }, [initData]);
-
-    // const handleClaimDailyReward = (status = 0) => {
-    //     API.post(`/users/claim/daily`, { userid: initData?.user?.id, status }).then(res => {
-    //         if (res.data.success) {
-    //             setDailyRemainSecond(res.data.ms);
-    //             setDailyReward(res.data.reward);
-    //             if (res.data.status == 'success') {
-    //                 toast.success('Claimed successfully.');
-    //             }
-    //         } else {
-    //             toast.error(res.data.msg);
-    //         }
-    //     }).catch(console.error);
-    // }
 
     // const handleJoinTelegramGroup = () => {
     //     API.post('/users/jointg', {
@@ -150,10 +136,10 @@ const Referral = () => {
         utils.openTelegramLink(LINK.TELEGRAM_CHANNEL);
     }
     
-    // const handleRetweetXLink = () => {
-    //     API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.TWEET }).catch(console.error);
-    //     utils.openLink(LINK.TWEET);
-    // }
+    const handleRetweetXLink = () => {
+        API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.TWEET }).catch(console.error);
+        utils.openLink(LINK.TWEET);
+    }
 
     const handleXLink = () => {
         API.post('/users/follow', { userid: initData?.user?.id, platform: PLATFORM.X }).catch(console.error);
@@ -295,7 +281,7 @@ const Referral = () => {
                     <div className="font-poppins text-[8px]">Each day brings you more coins</div>
                 </div>
             </div>
-            {/* <div className="mt-[10px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+            <div className="mt-[10px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <div className="flex items-center gap-3">
                     <img className="w-[26px] h-[26px]" src="/imgs/twitter.png" alt="" />
                     <div>
@@ -319,7 +305,7 @@ const Referral = () => {
                         }
                     />
                 </Modal>
-            </div> */}
+            </div>
             <div className="absolute w-[500px] top-[50px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_0%,#00000000_50%)]" />
             <Footer />
         </div>
