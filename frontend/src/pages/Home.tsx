@@ -14,7 +14,7 @@ const Home = () => {
             <div className="">
                 <img className="w-[238px] h-[230px]" src="/imgs/home.png" alt="" />
             </div>
-            <Link to="/play" className="flex items-center justify-center w-[160px] h-[50px] rounded-full border-2 border-[#F9E813] text-[22px] font-lily shadow-[0_0_10px_#F9E813] hover:shadow-[0_4px_10px_#F9E813] transition-all duration-200 hover:-translate-y-1">Get Started</Link>
+            <Link to="/play" className="flex items-center justify-center w-[160px] h-[50px] rounded-full border-2 border-[#F9E813] text-[22px] font-lily shadow-[0_0_10px_#F9E813] hover:shadow-[0_4px_10px_#F9E813] transition-all duration-200 hover:-translate-y-1">Start</Link>
             {/* <p className="font-lemon text-[14px] mt-[24px]">Loading...</p> */}
             <div className="flex flex-col items-center">
                 <div className="relative z-10 flex gap-[38px]">

@@ -301,8 +301,8 @@ const getLeaderboard = async (req, res) => {
       users = await User.find({}).sort({ monthlyScore: -1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
       rank = await User.countDocuments({ monthlyScore: { $gt: self.monthlyScore } });
     } else if (type == "total"){
-      users = await User.find({}).sort({ totalScore: -1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
-      rank = await User.countDocuments({ totalScore: { $gt: self.totalScore } });
+      users = await User.find({}).sort({ point: -1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
+      rank = await User.countDocuments({ point: { $gt: self.point } });
     }
     return res.status(StatusCodes.OK).json({users, rank:rank+1, self});
 

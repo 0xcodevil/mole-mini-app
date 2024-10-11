@@ -9,8 +9,8 @@ const Leaderboard = () => {
 
     const [users, setUsers] = useState<any[]>([]);
     // const [type, setType] = useState("total");
-    const [selfRank, setSelfRank] = useState(-1);
-    // const [self, setSelf] = useState<any>(null);
+    const [selfRank, setSelfRank] = useState('');
+    const [self, setSelf] = useState<any>(null);
 
     const [userCount, setUserCount] = useState(0);
     // const [isCounting, setCounting] = useState(false);
@@ -28,7 +28,7 @@ const Leaderboard = () => {
             .then(res => {
                 setUsers(res.data.users);
                 setSelfRank(res.data.rank);
-                // setSelf(res.data.self);
+                setSelf(res.data.self);
             }).catch(console.error);
     }, [])
 
@@ -47,8 +47,8 @@ const Leaderboard = () => {
                 <div className="flex items-center gap-[12px]">
                     <Avatar userid={initData?.user?.id} width={42} height={42} username={initData?.user?.username} />
                     <div className="">
-                        <div className="font-lemon text-[12px]">Madely Dias</div>
-                        <div className="font-poppins">590 coins</div>
+                        <div className="font-lemon text-[12px]">{ self?.firstname }</div>
+                        <div className="font-poppins">{self?.point} coins</div>
                     </div>
                 </div>
                 <div className="font-poppins text-[20px]"># {selfRank}</div>

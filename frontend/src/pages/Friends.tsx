@@ -50,7 +50,7 @@ const Friends = () => {
                     <div className="flex items-center gap-1">
                         <div className="w-[3px] h-[3px] rounded-full bg-[#FEC83A]" />
                         <img className="w-4 h-4" src="/imgs/coin.png" alt="" />
-                        <div className="font-poppins text-[12px]">+0.1 for you and your friend</div>
+                        <div className="font-poppins text-[12px]">+1 000 for you and your friend</div>
                     </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@ const Friends = () => {
                     <div className="flex items-center gap-1">
                         <div className="w-[3px] h-[3px] rounded-full bg-[#FEC83A]" />
                         <img className="w-4 h-4" src="/imgs/coin.png" alt="" />
-                        <div className="font-poppins text-[12px]">+0.3 for you and your friend</div>
+                        <div className="font-poppins text-[12px]">+2 000 for you and your friend</div>
                     </div>
                 </div>
             </div>
