@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import Footer from "@/components/Footer";
 import API from "@/libs/API";
-import Link from "@/components/Link";
+// import Link from "@/components/Link";
 
 const Shop = () => {
     const initData = useInitData();
