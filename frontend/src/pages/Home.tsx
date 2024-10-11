@@ -18,20 +18,23 @@ const Home = () => {
             {/* <p className="font-lemon text-[14px] mt-[24px]">Loading...</p> */}
             <div className="flex flex-col items-center">
                 <div className="relative z-10 flex gap-[38px]">
-                    <Link to="/leaderboard" className="transition-all duration-200 hover:-translate-y-1">
+                    <Link to="/shop" className="transition-all duration-200 translate-y-3 hover:translate-y-1">
+                        <img className="w-[57px] h-[57px]" src="/imgs/shop.png" alt="" />
+                    </Link>
+                    <Link to="/leaderboard" className="transition-all duration-200 translate-y-10 hover:translate-y-8">
                         <img className="w-[57px] h-[57px]" src="/imgs/leaderboard.png" alt="" />
                     </Link>
-                    <button onClick={app?.toggleMusic} className="translate-y-[9px] hover:translate-y-0 transition-all duration-200">
+                    <button onClick={app?.toggleMusic} className="transition-all duration-200 translate-y-10 hover:translate-y-8">
                         {app?.volume === "on" ?
                             <img className="w-[57px] h-[57px]" src="/imgs/music.png" alt="" /> :
                             <img className="w-[57px] h-[57px]" src="/imgs/music-muted.png" alt="" />
                         }
                     </button>
-                    <Link to="/referral" className="transition-all duration-200 hover:-translate-y-1">
+                    <Link to="/referral" className="transition-all duration-200 translate-y-3 hover:translate-y-1">
                         <img className="w-[57px] h-[57px]" src="/imgs/info.png" alt="" />
                     </Link>
                 </div>
-                <div className="w-[353px] h-[64px] bg-[#9A00A924] rounded-[100%] shadow-[0_4px_10px_#FFD4005C] -translate-y-[35px]" />
+                <div className="w-[353px] h-[64px] bg-[#9A00A924] rounded-[100%] shadow-[0_4px_10px_#FFD4005C]" />
             </div>
         </div>
     )

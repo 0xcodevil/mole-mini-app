@@ -31,11 +31,11 @@ const swapTicket = async (req, res) => {
     if(!user) {
       return res.status(StatusCodes.OK).json({success: false, status: 'nouser', msg: 'There is no user!'});
     }
-    if(point == 20) {
+    if(point == 100) {
         user.ticket += 1;
-    } else if(point == 50) {
+    } else if(point == 250) {
         user.ticket += 3;
-    } else if(point == 100) {
+    } else if(point == 400) {
         user.ticket += 5;
     } else {
         return res.status(StatusCodes.OK).json({success: false, status: 'invalid', msg: 'Invalid point count!'});

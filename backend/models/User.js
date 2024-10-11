@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
   
   token: { type: Number, default: 0 },
   point: { type: Number, default: 0 },
+  ticket: { type: Number, default: 5 },
 
   totalScore: { type: Number, default: 0 },
   weeklyScore: { type: Number, default: 0 },

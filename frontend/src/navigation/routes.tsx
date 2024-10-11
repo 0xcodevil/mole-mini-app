@@ -7,6 +7,7 @@ import Earn from '@/pages/Earn';
 import Friends from '@/pages/Friends';
 import Boost from '@/pages/Boost';
 import Referral from '@/pages/Referral';
+import Shop from '@/pages/Shop';
 
 interface Route {
   path: string;
@@ -22,5 +23,6 @@ export const routes: Route[] = [
   { path: '/earn', Component: Earn },
   { path: '/friends', Component: Friends },
   { path: '/boost', Component: Boost },
-  { path: 'referral', Component: Referral }
+  { path: '/referral', Component: Referral },
+  { path: '/shop', Component: Shop }
 ];

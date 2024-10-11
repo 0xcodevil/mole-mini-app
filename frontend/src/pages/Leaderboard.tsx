@@ -48,7 +48,7 @@ const Leaderboard = () => {
                     <Avatar userid={initData?.user?.id} width={42} height={42} username={initData?.user?.username} />
                     <div className="">
                         <div className="font-lemon text-[12px]">{ self?.firstname }</div>
-                        <div className="font-poppins">{self?.point} coins</div>
+                        <div className="font-poppins">{self?.point.toLocaleString()} coins</div>
                     </div>
                 </div>
                 <div className="font-poppins text-[20px]"># {selfRank}</div>

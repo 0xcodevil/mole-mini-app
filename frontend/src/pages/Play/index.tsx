@@ -1,5 +1,6 @@
 import { Fragment, useState, useRef, useEffect } from "react";
 import { useInitData } from "@telegram-apps/sdk-react";
+import { toast } from "react-toastify";
 import gsap from 'gsap';
 import confetti from "canvas-confetti"
 import Countdown from "react-countdown";
@@ -38,6 +39,7 @@ const Game = () => {
 	const { play: playSparkle } = useAudio('/mp3/sparkle.mp3')
 	const { play: playClick } = useAudio('/mp3/click.mp3')
 
+    const [ticket, setTicket] = useState(0);
 	const [moles, setMoles] = useState(generateMoles())
 	const [playing, setPlaying] = useState(false)
 	const [starting, setStarting] = useState(false)
@@ -103,22 +105,40 @@ const Game = () => {
 	}
 
 	const startGame = () => {
-		if (!muted) playClick()
-		setScore(0)
-		setNewHighScore(false)
-		setMoles(generateMoles(!!boosted))
-		setStarting(true)
-		setFinished(false)
+		API.post('/play/start', { userid: initData?.user?.id })
+            .then(res => {
+                if (res.data.success) {
+                    setTicket(res.data.ticket);
+					if (!muted) playClick()
+					setScore(0)
+					setNewHighScore(false)
+					setMoles(generateMoles(!!boosted))
+					setStarting(true)
+					setFinished(false)
+                } else {
+                    toast.error(res.data.msg);
+                }
+            }).catch(err => {
+                console.error(err);
+                toast.error(err.message);
+            });
 	}
 
 	useEffect(() => {
 		API.get('/users/boost/getmy/' + initData?.user?.id).then(res => {
             res.data.success && setEndTime(res.data.boost.endTime);
         }).catch(console.error);
+		API.get(`/users/get/${initData?.user?.id}`).then(res => {
+            setTicket(res.data.ticket);
+        }).catch(console.error);
 	}, [])
 
 	return (
 		<Fragment>
+			<div className="absolute font-poppins text-[10px] top-[3px] right-[16px] flex items-center gap-1">
+				<img className="w-[20px]" src="/imgs/ticket.png" alt="" />
+				<span>{ ticket }</span>
+			</div>
 			{
                 boosted ? <Countdown
                     date={boosted}

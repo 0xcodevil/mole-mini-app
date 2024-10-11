@@ -229,7 +229,7 @@ const Referral = () => {
                     />
                 </Modal>
             </div>
-            <div className="mt-[10px] relative flex justify-between items-center py-5 px-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+            <div className="mt-[14px] relative flex justify-between items-center py-5 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
                 <div className="flex items-center gap-3">
                     <img className="w-[26px] h-[26px]" src="/imgs/twitter.png" alt="" />
                     <div>
