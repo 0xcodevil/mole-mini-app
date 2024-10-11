@@ -135,19 +135,21 @@ const Game = () => {
 
 	return (
 		<Fragment>
-			<div className="absolute font-poppins text-[10px] top-[3px] right-[16px] flex items-center gap-1">
-				<img className="w-[20px]" src="/imgs/ticket.png" alt="" />
-				<span>{ ticket }</span>
+			<div className="absolute top-[3px] left-[10px]">
+				{
+					boosted ? <Countdown
+						date={boosted}
+						intervalDelay={1000}
+						precision={3}
+						onComplete={() => setEndTime('')}
+						renderer={(props) => <div className="font-poppins text-[10px] mb-1">Boost&nbsp;&nbsp;{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</div>}
+					/> : null
+				}
+				<div className="font-poppins text-[10px] flex items-center gap-1">
+					<img className="w-[20px]" src="/imgs/ticket.png" alt="" />
+					<span>{ ticket }</span>
+				</div>
 			</div>
-			{
-                boosted ? <Countdown
-                    date={boosted}
-                    intervalDelay={1000}
-                    precision={3}
-                    onComplete={() => setEndTime('')}
-                    renderer={(props) => <div className="absolute font-poppins text-[10px] top-[3px] left-[10px]">Boost&nbsp;&nbsp;{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</div>}
-                /> : null
-            }
 			{/* Fresh */}
 			{!starting && !playing && !finished && (
 				<StartScreen onStart={startGame} />
