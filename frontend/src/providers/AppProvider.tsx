@@ -21,7 +21,8 @@ const AppProvider = ({ children }: { children: JSX.Element }) => {
     useEffect(() => {
         let isMute = volume === "off";
         Howler.mute(isMute);
-        localStorage.setItem('volume', volume); 
+        localStorage.setItem('volume', volume);
+        localStorage.setItem('whac-muted', volume === "on" ? "false" : "true");
     }, [volume])
 
     const toggleMusic = () => {
@@ -45,7 +46,8 @@ const AppProvider = ({ children }: { children: JSX.Element }) => {
         const audio = new Howl({
             src: ['/mp3/background.mp3'],
             autoplay: true,
-            loop: true
+            loop: true,
+            volume: 0.3
         });
 
         audio.play();
