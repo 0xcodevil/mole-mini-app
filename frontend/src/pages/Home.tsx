@@ -5,18 +5,18 @@ const Home = () => {
     const app = useApp();
 
     return (
-        <div className="w-screen flex flex-col items-center justify-between overflow-hidden bg-[url('/imgs/home-background.png')] bg-contain bg-no-repeat bg-center bg-fixed pt-[57px] pb-[67px]">
+        <div className="w-screen flex flex-col items-center justify-between h-screen bg-[url('/imgs/home-background.png')] bg-contain bg-no-repeat bg-center bg-fixed py-5">
             <h1 className="text-center font-margarine text-[40px]">Mole Smash</h1>
             <div className="flex items-center gap-[4px] mx-auto">
                 <p className="font-marcellus text-[22px] text-transparent bg-clip-text bg-[linear-gradient(to_right,#00D0FF,#FFDD00,#D400FF,#FF0099)]">MINI APP</p>
                 <img className="w-[16px] h-[16px]" src="/imgs/verified.png" alt="" />
             </div>
-            <div className="mt-[28px]">
+            <div className="">
                 <img className="w-[238px] h-[230px]" src="/imgs/home.png" alt="" />
             </div>
-            <Link to="/play" className="mt-[34px] flex items-center justify-center w-[160px] h-[50px] rounded-full border-2 border-[#F9E813] text-[22px] font-lily shadow-[0_0_10px_#F9E813] hover:shadow-[0_4px_10px_#F9E813] transition-all duration-200 hover:-translate-y-1">Get Started</Link>
+            <Link to="/play" className="flex items-center justify-center w-[160px] h-[50px] rounded-full border-2 border-[#F9E813] text-[22px] font-lily shadow-[0_0_10px_#F9E813] hover:shadow-[0_4px_10px_#F9E813] transition-all duration-200 hover:-translate-y-1">Get Started</Link>
             {/* <p className="font-lemon text-[14px] mt-[24px]">Loading...</p> */}
-            <div className="mt-[82px] flex flex-col items-center">
+            <div className="flex flex-col items-center">
                 <div className="relative z-10 flex gap-[38px]">
                     <Link to="/leaderboard" className="transition-all duration-200 hover:-translate-y-1">
                         <img className="w-[57px] h-[57px]" src="/imgs/leaderboard.png" alt="" />

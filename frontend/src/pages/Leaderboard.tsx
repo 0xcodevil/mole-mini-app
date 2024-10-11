@@ -38,7 +38,7 @@ const Leaderboard = () => {
     // }
 
     return (
-        <div className="px-[18px] w-screen h-screen">
+        <div className="px-[18px] py-4 w-screen h-screen">
             <div className="flex flex-col items-center">
                 <h1 className="font-margarine text-[27px] text-center">Wall of Fame</h1>
                 <span className="font-madimi text-[16px] text-center text-transparent bg-clip-text bg-[linear-gradient(to_right,#00D0FF,#FFDD00,#D400FF,#FF0099)]">Leaderboard</span>  
@@ -51,7 +51,7 @@ const Leaderboard = () => {
                         <div className="font-poppins">590 coins</div>
                     </div>
                 </div>
-                <div className="font-poppins text-[10px]">#{selfRank}</div>
+                <div className="font-poppins text-[20px]"># {selfRank}</div>
             </div>
             <h1 className="font-lemon text-[13px] my-[28px]">{userCount} holders</h1>
             <div className="h-[calc(100vh-330px)] overflow-y-auto flex flex-col gap-[28px]">
