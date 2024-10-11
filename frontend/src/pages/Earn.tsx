@@ -33,10 +33,10 @@ const Earn = () => {
                 <img src="/imgs/arrow.png" alt="" className="w-[15px] h-[15px]" />
                 <div className="border flex-1 w-full border-b-[3px] border-t-0 border-dashed border-[#8A008E]" />
             </Link>
-            <div className="mt-6 w-full relative flex justify-between items-center p-[18px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+            <div className="mt-6 w-full relative flex justify-around items-center p-[18px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <img src="/imgs/point.png" alt="" className="w-[42px] h-[42px]" />
                 <span className="font-lemon text-[20px]">{points.toLocaleString()}</span>
-                <span className="font-poppins text-[14px]">1000 / 1000</span>
+                {/* <span className="font-poppins text-[14px]">1000 / 1000</span> */}
             </div>
             <div className="absolute w-[500px] top-[80px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_-30%,#00000000_50%)]" />
             <div className="absolute w-[500px] -top-[150px] -left-[60%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_10%,#00000000_50%)]" />

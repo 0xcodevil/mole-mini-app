@@ -36,7 +36,10 @@ export const App: FC = () => {
   }, [themeParams]);
 
   useEffect(() => {
-    return viewport && bindViewportCSSVars(viewport);
+    if (viewport) {
+      viewport.expand();
+      bindViewportCSSVars(viewport);
+    }
   }, [viewport]);
 
   // Create a new application navigator and attach it to the browser history, so it could modify
