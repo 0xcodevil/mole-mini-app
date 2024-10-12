@@ -34,3 +34,28 @@ body {
 ::-webkit-scrollbar {
     display: none;
 }
+
+.Toastify__toast{
+    border: solid #07BC0C 1px;
+    border-radius: 10px;
+    margin: 0px 20px;
+    min-height: auto;
+}
+
+.Toastify__toast.Toastify__toast--error{
+    border: solid red 2px;
+}
+
+.Toastify__toast-body {
+    margin: 0;
+    padding: 0;
+}
+
+.Toastify__toast-body > * {
+    text-align: center;
+    color: #07BC0C;
+}
+
+.Toastify__toast.Toastify__toast--error > .Toastify__toast-body > * {
+    color: red;
+}

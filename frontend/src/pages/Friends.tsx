@@ -33,7 +33,7 @@ const Friends = () => {
     const handleInviteLinkCopyButton = () => {
         const link = LINK.TELEGRAM_MINIAPP + '?start=' + initData?.user?.id;
         navigator.clipboard.writeText(link)
-            .then(() => toast.success('Invite link copied!'))
+            .then(() => toast('Invite link copied!'))
             .catch();
     }
 

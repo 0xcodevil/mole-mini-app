@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useInitData } from "@telegram-apps/sdk-react";
+import { Modal, Placeholder, Button } from '@telegram-apps/telegram-ui';
 import { toast } from "react-toastify";
 
 import Footer from "@/components/Footer";
@@ -12,6 +13,10 @@ const Shop = () => {
     const [ticket, setTicket] = useState(0);
     const [point, setPoint] = useState(0);
 
+    const [isModalOpen1, setModalOpen1] = useState(false);
+    const [isModalOpen2, setModalOpen2] = useState(false);
+    const [isModalOpen3, setModalOpen3] = useState(false);
+
     useEffect(() => {
         API.get(`/users/get/${initData?.user?.id}`).then(res => {
             setPoint(res.data.point);
@@ -20,11 +25,13 @@ const Shop = () => {
     }, []);
 
     const handleSwapClick = (points: number) => {
-        const yes = confirm('Are you sure?');
-        if (yes) API.post('/play/swap', { userid: initData?.user?.id, point: points })
+        setModalOpen1(false);
+        setModalOpen2(false);
+        setModalOpen3(false);
+        API.post('/play/swap', { userid: initData?.user?.id, point: points })
             .then(res => {
                 if (res.data.success) {
-                    toast.success('You got tickets.');
+                    toast('You got tickets.');
                     setTicket(res.data.ticket);
                     setPoint(res.data.point);
                 } else {
@@ -43,11 +50,11 @@ const Shop = () => {
                 <div className="flex flex-col items-start justify-center gap-3">
                     <div className="flex items-center gap-3">
                         <img className="w-[34px]" src="/imgs/ticket.png" alt="" />
-                        <span className="text-[#F9E813]">{ ticket.toLocaleString() }</span>
+                        <span className="text-[#F9E813]">{ticket.toLocaleString()} <small>tickets</small></span>
                     </div>
                     <div className="flex items-center gap-3">
                         <img className="w-[30px]" src="/imgs/point.png" alt="" />
-                        <span className="text-[#F9E813]">{ point.toLocaleString() }</span>
+                        <span className="text-[#F9E813]">{point.toLocaleString()} <small>coins</small></span>
                     </div>
                 </div>
                 <img src="/imgs/earn.png" alt="" className="w-[100px]" />
@@ -62,7 +69,17 @@ const Shop = () => {
                         </div>
                     </div>
                 </div>
-                <button disabled={false} onClick={() => handleSwapClick(100)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Swap</button>
+                <Modal
+                    header={<Modal.Header />}
+                    trigger={<button onClick={() => setModalOpen1(true)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Swap</button>}
+                    open={isModalOpen1}
+                    onOpenChange={setModalOpen1}
+                >
+                    <Placeholder
+                        header={<span className="text-black dark:text-white">Are you sure?</span>}
+                        action={<Button onClick={() => handleSwapClick(100)} size="m" stretched>Yes, I'm sure!</Button>}
+                    />
+                </Modal>
             </div>
             <div className="w-full mt-[14px] relative flex justify-between items-center py-3 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
                 <div className="flex items-center gap-3">
@@ -74,7 +91,17 @@ const Shop = () => {
                         </div>
                     </div>
                 </div>
-                <button disabled={false} onClick={() => handleSwapClick(250)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Swap</button>
+                <Modal
+                    header={<Modal.Header />}
+                    trigger={<button onClick={() => setModalOpen2(true)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Swap</button>}
+                    open={isModalOpen2}
+                    onOpenChange={setModalOpen2}
+                >
+                    <Placeholder
+                        header={<span className="text-black dark:text-white">Are you sure?</span>}
+                        action={<Button onClick={() => handleSwapClick(250)} size="m" stretched>Yes, I'm sure!</Button>}
+                    />
+                </Modal>
             </div>
             <div className="w-full mt-[14px] relative flex justify-between items-center py-3 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
                 <div className="flex items-center gap-3">
@@ -86,7 +113,17 @@ const Shop = () => {
                         </div>
                     </div>
                 </div>
-                <button disabled={false} onClick={() => handleSwapClick(400)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Swap</button>
+                <Modal
+                    header={<Modal.Header />}
+                    trigger={<button onClick={() => setModalOpen3(true)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Swap</button>}
+                    open={isModalOpen3}
+                    onOpenChange={setModalOpen3}
+                >
+                    <Placeholder
+                        header={<span className="text-black dark:text-white">Are you sure?</span>}
+                        action={<Button onClick={() => handleSwapClick(400)} size="m" stretched>Yes, I'm sure!</Button>}
+                    />
+                </Modal>
             </div>
             {/* <div className="mt-6 w-full relative flex justify-between items-center p-[18px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <img src="/imgs/golden-hammer.png" alt="" className="w-[42px] h-[42px]" />

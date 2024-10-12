@@ -70,7 +70,7 @@ const Boost = () => {
                 return API.post('users/boost/purchase', { userid: initData?.user?.id, boostid: item._id });
             }).then(res => {
                 if (res.data.success) {
-                    toast.success(res.data.msg);
+                    toast(res.data.msg);
                     setPurchasedItem(items?.find((i: any) => i._id === item._id));
                     setEndTime(res.data.boost.endTime);
                     // setTotalUsers(prev => prev + 1);

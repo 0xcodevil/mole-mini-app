@@ -33,7 +33,7 @@ const Referral = () => {
             API.post(`/users/connect_wallet`, { userid: initData?.user?.id }).then(res => {
                 if (res.data.success) {
                     setConnectedWallet(true);
-                    toast.success(res.data.msg);
+                    toast(res.data.msg);
                 } else toast.error(res.data.msg);
             }).catch(console.error)
         } else {
@@ -47,7 +47,7 @@ const Referral = () => {
                 setDailyRemainSecond(res.data.ms);
                 setDailyReward(res.data.reward);
                 if (res.data.status == 'success') {
-                    toast.success('Claimed successfully.');
+                    toast('Claimed successfully.');
                 }
             } else {
                 toast.error(res.data.msg);
@@ -59,7 +59,7 @@ const Referral = () => {
         API.post('/users/tweet', { userid: initData?.user?.id, username: initData?.user?.username }).then(res => {
             if(res.data.success) {
                 setRetweetX(true);
-                toast.success(res.data.msg);
+                toast(res.data.msg);
             }
             else toast.error(res.data.msg);
         }).catch(err => console.error(err));
@@ -86,7 +86,7 @@ const Referral = () => {
     //         if (res.data.success) {
     //             setJoinedTelegramGroup(true);
     //             // setOpenGroupModal(false);
-    //             toast.success(res.data.msg);
+    //             toast(res.data.msg);
     //         }
     //         else toast.error(res.data.msg);
     //     }).catch(console.error);
@@ -100,7 +100,7 @@ const Referral = () => {
             if (res.data.success) {
                 setJoinedTelegramChannel(true);
                 // setOpenChannelModal(false);
-                toast.success(res.data.msg);
+                toast(res.data.msg);
             }
             else toast.error(res.data.msg);
         }).catch(console.error);
@@ -111,7 +111,7 @@ const Referral = () => {
             if (res.data.success) {
                 setFollowingX(true);
                 // setOpenFollowXModal(false);
-                toast.success(res.data.msg);
+                toast(res.data.msg);
             }
             else toast.error(res.data.msg);
         }).catch(console.error);
@@ -122,7 +122,7 @@ const Referral = () => {
     //         if (res.data.success) {
     //             setFollowingYouTube(true);
     //             // setOpenRetweetXModal(false);
-    //             toast.success(res.data.msg);
+    //             toast(res.data.msg);
     //         }
     //         else toast.error(res.data.msg);
     //     }).catch(console.error);

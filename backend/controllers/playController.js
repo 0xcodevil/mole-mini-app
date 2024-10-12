@@ -57,8 +57,50 @@ const addPlayedPoint = async (req, res) => {
     await user.save();
     return res.status(StatusCodes.OK).json({success: true, ticket: user.ticket, point: user.point});
 }
+const purchaseItems = async (req, res) => {
+  const { userid, type } = req.body;
+  var user = await User.findOne({ userid });
+  if(!user) {
+    return res.status(StatusCodes.OK).json({success: false, status: 'nouser', msg: 'There is no user!'});
+  }
+  if(type === "golden") {
+    user.golden ++;
+    await user.save();
+  }
+  if(type === "wooden") {
+    user.wooden ++;
+    await user.save();
+  }
+  return res.status(StatusCodes.OK).json({success: true, golden: user.golden, wooden: user.wooden});
+}
+const useItem = async (req, res) => {
+  const { userid, type } = req.body;
+  var user = await User.findOne({ userid });
+  if(!user) {
+    return res.status(StatusCodes.OK).json({success: false, status: 'nouser', msg: 'There is no user!'});
+  }
+  if(type === "golden") {
+    if (user.golden > 0) {
+      user.golden --;
+      await user.save();
+    } else {
+      return res.status(StatusCodes.OK).json({ success: false, status: 'nogolden', msg: 'There is no golden harmmer!'});
+    }
+  }
+  if(type === "wooden") {
+    if (user.golden > 0) {
+      user.wooden --;
+      await user.save();
+    } else {
+      return res.status(StatusCodes.OK).json({ success: false, status: 'nowooden', msg: 'There is no wooden harmmer!'});
+    }
+  }
+  return res.status(StatusCodes.OK).json({success: true, golden: user.golden, super: user.super});
+}
 module.exports = {
     startGame,
     swapTicket,
     addPlayedPoint,
+    purchaseItems,
+    useItem,
 };

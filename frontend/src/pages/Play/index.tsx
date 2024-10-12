@@ -40,10 +40,14 @@ const Game = () => {
 	const { play: playClick } = useAudio('/mp3/click.mp3')
 
     const [ticket, setTicket] = useState(0);
+	const [goldenCount, setGoldenCount] = useState(0);
+	const [woodenCount, setWoodenCount] = useState(0);
 	const [moles, setMoles] = useState(generateMoles())
 	const [playing, setPlaying] = useState(false)
 	const [starting, setStarting] = useState(false)
 	const [finished, setFinished] = useState(false)
+	const [usingGolden, setUsingGolden] = useState(false)
+	const [usingWooden, setUsingWooden] = useState(false)
 	const [score, setScore] = useState(0)
     const [boosted, setEndTime] = useState('')
 	const [newHighScore, setNewHighScore] = useState(false)
@@ -68,6 +72,34 @@ const Game = () => {
 		}
 		let newScore = score + points;
 		setScore(newScore > 0 ? newScore : 0);
+	}
+
+	const useGolden = () => {
+		if (!playing || usingGolden || usingWooden) return;
+		API.post('/play/useitem', { userid: initData?.user?.id, type: "golden" })
+			.then(res => {
+				if (res.data.success) {
+					setGoldenCount(prev => prev - 1);
+					setUsingGolden(true);
+					setTimeout(setUsingGolden, GAME.GOLDEN_TIME, false);
+				} else {
+					toast.error(res.data.msg);
+				}
+			}).catch(console.error);
+	}
+
+	const useWooden = () => {
+		if (!playing || usingGolden || usingWooden) return;
+		API.post('/play/useitem', { userid: initData?.user?.id, type: "wooden" })
+			.then(res => {
+				if (res.data.success) {
+					setWoodenCount(prev => prev - 1);
+					setUsingWooden(true);
+					setTimeout(setUsingWooden, GAME.WOODEN_TIME, false);
+				} else {
+					toast.error(res.data.msg);
+				}
+			}).catch(console.error);
 	}
 
 	const endGame = () => {
@@ -130,26 +162,13 @@ const Game = () => {
         }).catch(console.error);
 		API.get(`/users/get/${initData?.user?.id}`).then(res => {
             setTicket(res.data.ticket);
+            setGoldenCount(res.data.golden);
+            setWoodenCount(res.data.wooden);
         }).catch(console.error);
 	}, [])
 
 	return (
 		<Fragment>
-			<div className="absolute top-[3px] left-[10px]">
-				{
-					boosted ? <Countdown
-						date={boosted}
-						intervalDelay={1000}
-						precision={3}
-						onComplete={() => setEndTime('')}
-						renderer={(props) => <div className="font-poppins text-[10px] mb-1">Boost&nbsp;&nbsp;{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</div>}
-					/> : null
-				}
-				<div className="font-poppins text-[10px] flex items-center gap-1">
-					<img className="w-[20px]" src="/imgs/ticket.png" alt="" />
-					<span>{ ticket }</span>
-				</div>
-			</div>
 			{/* Fresh */}
 			{!starting && !playing && !finished && (
 				<StartScreen onStart={startGame} />
@@ -180,9 +199,35 @@ const Game = () => {
 				</Fragment>
 			)}
 			{/* Moles are always visible but not always active */}
-			<main ref={boardRef} className="w-screen h-screen px-[10px] pt-[80px]">
+			<main ref={boardRef} className="w-screen h-screen px-[10px]">
             	<div className="absolute w-[500px] top-[30px] left-0 h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_-10%,#00000000_50%)]" />
-				<div className="grid grid-cols-3 justify-items-center gap-y-2">
+				<div className="absolute top-[3px] left-[10px]">
+					{
+						boosted ? <Countdown
+							date={boosted}
+							intervalDelay={1000}
+							precision={3}
+							onComplete={() => setEndTime('')}
+							renderer={(props) => <div className="font-poppins text-[10px] mb-1">Boost&nbsp;&nbsp;{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</div>}
+						/> : null
+					}
+					<div className="font-poppins text-[10px] flex items-center gap-1">
+						<img className="w-[20px]" src="/imgs/ticket.png" alt="" />
+						<span>{ ticket }</span>
+					</div>
+				</div>
+				<div className="flex justify-end gap-3 pt-[60px]">
+					<button onClick={useWooden} className={`relative w-[50px] h-[50px] ${ usingWooden ? 'animate-pulse' : '' }`}>
+						<img className="w-[50px] h-[50px] -scale-x-100" src="/imgs/wooden-hammer.png" alt="" />
+						<span className="absolute bottom-0 right-0">x{ woodenCount }</span>
+					</button>
+					<button onClick={useGolden} className={`relative w-[50px] h-[50px] ${ usingGolden ? 'animate-pulse' : '' }`}>
+						<img className="w-[50px] h-[50px]" src="/imgs/golden-hammer.png" alt="" />
+						<span className="absolute bottom-0 right-0">x{ goldenCount }</span>
+					</button>
+					<img src="/imgs/coins.png" className="w-[32px] h-[54px]" alt="" />
+				</div>
+				<div className="grid grid-cols-3 justify-items-center gap-y-2 pt-[40px]">
 					{moles.map(({ speed, delay, points }, id) => (
 						<Mole
 							key={id}
@@ -193,6 +238,7 @@ const Game = () => {
 							points={points}
 							loading={id === 2 && !starting && !playing && !finished}
 							boosted={!!boosted}
+							usingItem={playing && (usingGolden || usingWooden)}
 						/>
 					))}
 				</div>

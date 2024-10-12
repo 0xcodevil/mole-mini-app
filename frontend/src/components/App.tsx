@@ -16,7 +16,7 @@ import {
   Router,
   Routes,
 } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, Zoom } from 'react-toastify';
 
 import AppProvider from '@/providers/AppProvider';
 import { routes } from '@/navigation/routes.tsx';
@@ -67,7 +67,7 @@ export const App: FC = () => {
           </Routes>
         </Router>
       </AppProvider>
-      <ToastContainer position="top-center" autoClose={3000} theme="dark" />
+      <ToastContainer position="top-right" transition={Zoom} hideProgressBar={true} closeButton={false} autoClose={1000} theme="dark" />
     </AppRoot>
   );
 };
