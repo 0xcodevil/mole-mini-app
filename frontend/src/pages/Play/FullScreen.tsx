@@ -5,13 +5,13 @@ import { useInitData } from "@telegram-apps/sdk-react";
 import API from "@/libs/API";
 
 interface FinishScreenProps {
-	newHigh: boolean;
+	newHigh?: boolean;
 	onRestart: () => any;
 	onReset: () => any;
 	result: number;
 }
 
-const FinishScreen = ({ newHigh, onRestart, result }: FinishScreenProps) => {
+const FinishScreen = ({ onRestart, result }: FinishScreenProps) => {
 	const initData = useInitData();
 	useEffect(() => {
 		if (!result) return;
