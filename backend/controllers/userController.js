@@ -295,14 +295,29 @@ const getLeaderboard = async (req, res) => {
     const self = await User.findOne({ userid }).select('-password');
     var rank = -1; 
     if (type == "week"){
-      users = await User.find({}).sort({ weeklyScore: -1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
-      rank = await User.countDocuments({ weeklyScore: { $gt: self.weeklyScore } });
+      users = await User.find({}).sort({ weeklyScore: -1, _id: 1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
+      rank = await User.countDocuments({
+        $or: [
+          { weeklyScore: { $gt: self.weeklyScore } },
+          { weeklyScore: self.point, _id: { $lt: self._id } } 
+        ]
+      });
     } else if (type == "month"){
-      users = await User.find({}).sort({ monthlyScore: -1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
-      rank = await User.countDocuments({ monthlyScore: { $gt: self.monthlyScore } });
+      users = await User.find({}).sort({ monthlyScore: -1, _id: 1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
+      rank = await User.countDocuments({
+        $or: [
+          { monthlyScore: { $gt: self.monthlyScore } },
+          { monthlyScore: self.point, _id: { $lt: self._id } } 
+        ]
+      });
     } else if (type == "total"){
-      users = await User.find({}).sort({ point: -1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
-      rank = await User.countDocuments({ point: { $gt: self.point } });
+      users = await User.find({}).sort({ point: -1, _id: 1 }).limit(LEADERBOARD_SHOW_USER_COUNT).select('-password');
+      rank = await User.countDocuments({
+        $or: [
+          { point: { $gt: self.point } },
+          { point: self.point, _id: { $lt: self._id } } 
+        ]
+      });
     }
     return res.status(StatusCodes.OK).json({users, rank:rank+1, self});
 
