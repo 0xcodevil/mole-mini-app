@@ -26,7 +26,7 @@ const Earn = () => {
                 <div className="font-lemon text-[21px]">Hit The Mole</div>
                 <img className="w-[72px]" src="/imgs/hit-mole.png" alt="" />
             </div>
-            <Link to="/boost" className="relative z-10 flex items-center justify-center w-full gap-2 pr-3 mt-6">
+            <Link to="/shop" className="relative z-10 flex items-center justify-center w-full gap-2 pr-3 mt-6">
                 <div className="border flex-1 w-full border-b-[3px] border-t-0 border-dashed border-[#8A008E]" />
                 <img src="/imgs/rocket.png" alt="" className="w-[44px]" />
                 <span className="font-lemon text-[24px]">Boost</span>

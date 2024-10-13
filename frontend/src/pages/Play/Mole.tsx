@@ -10,7 +10,7 @@ interface MoleProps {
 	delay: number;
 	points: number;
 	pointsMin?: number;
-	boosted: boolean;
+	boost: number;
 	usingItem: boolean;
 }
 
@@ -22,7 +22,7 @@ const Mole = ({
 	delay,
 	points,
 	pointsMin = 1,
-	boosted,
+	boost,
 	usingItem
 }: MoleProps) => {
 	const [image, setImage] = useState('mole-0.png');
@@ -150,12 +150,12 @@ const Mole = ({
 		}
 	}, [loading])
 
-	useEffect(() => {
-		if (!whacked && active && usingItem && pointsRef.current > 0) {
-			let rect = moleContainerRef.current.getBoundingClientRect();
-			setTimeout(whackManually, speed * 1000 / bobRef.current.timeScale(), rect.left + rect.width / 2, rect.top + rect.height / 2);
-		}
-	}, [usingItem, active, whacked])
+	// useEffect(() => {
+	// 	if (!whacked && active && usingItem && pointsRef.current > 0) {
+	// 		let rect = moleContainerRef.current.getBoundingClientRect();
+	// 		setTimeout(whackManually, speed * 1000 / bobRef.current.timeScale(), rect.left + rect.width / 2, rect.top + rect.height / 2);
+	// 	}
+	// }, [usingItem, active, whacked])
 
 	// To render the score, we don't need React elements.
 	// We can render them straight to the DOM and remove them once they've animated.
@@ -166,7 +166,7 @@ const Mole = ({
 		SCORE_HOLDER.className = 'mole__points-holder'
 		const SCORE = document.createElement('div')
 		SCORE.className = 'mole__points'
-		SCORE.innerText = pointsRef.current.toString() + (boosted && pointsRef.current > 0 ? 'x2' : '')
+		SCORE.innerText = pointsRef.current.toString() + (boost > 1 && pointsRef.current > 0 ? 'x' + boost : '')
 		SCORE_HOLDER.appendChild(SCORE)
 		document.body.appendChild(SCORE_HOLDER)
 		gsap.set(SCORE_HOLDER, {
@@ -203,14 +203,14 @@ const Mole = ({
 	const whack = (e: MouseEvent) => {
 		setWhacked(true)
 		renderScore(e.pageX, e.pageY)
-		onWhack(boosted && pointsRef.current > 0 ? pointsRef.current * 2 : pointsRef.current, pointsRef.current > GAME.GOLDEN_SCORE * 0.5)
+		onWhack(pointsRef.current > 0 ? pointsRef.current * boost : pointsRef.current, pointsRef.current > GAME.GOLDEN_SCORE * 0.5)
 	}
 
-	const whackManually = (x: number, y: number) => {
-		setWhacked(true)
-		renderScore(x, y)
-		onWhack(boosted && pointsRef.current > 0 ? pointsRef.current * 2 : pointsRef.current, pointsRef.current > GAME.GOLDEN_SCORE * 0.5)
-	}
+	// const whackManually = (x: number, y: number) => {
+	// 	setWhacked(true)
+	// 	renderScore(x, y)
+	// 	onWhack(boosted && pointsRef.current > 0 ? pointsRef.current * 2 : pointsRef.current, pointsRef.current > GAME.GOLDEN_SCORE * 0.5)
+	// }
 
 	// Much of what is rendered is the Mole SVG and the Hole.
 	// You could do this with images and CSS based on your design.

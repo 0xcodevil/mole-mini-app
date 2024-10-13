@@ -21,13 +21,13 @@ const Boost = () => {
     const [endTime, setEndTime] = useState(0);
 
     useEffect(() => {
-        API.get('/users/boost/getall').then(res => {
+        API.get('/play/boost/getall').then(res => {
                 setItems(res.data.boosts);
             }).catch(err => {
                 toast.error('Something went wrong.');
                 console.error(err);
             });
-        API.get('/users/boost/getmy/' + initData?.user?.id).then(res => {
+        API.get('/play/boost/getmy/' + initData?.user?.id).then(res => {
                 if (res.data.success) {
                     setPurchasedItem(res.data.boost.item);
                     setEndTime(res.data.boost.endTime);

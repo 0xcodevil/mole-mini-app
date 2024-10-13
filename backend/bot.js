@@ -112,6 +112,7 @@ const botStart = async () => {
             return;
         }
         const boostIndex = user.boosts.findIndex(b => b.item.equals(boost._id));
+        const now = new Date();
         if (boostIndex !== -1) {
             user.boosts[boostIndex].endTime = new Date(user.boosts[boostIndex].endTime.getTime() + boost.period * 24 * 60 * 60 * 1000);
         } else {
@@ -128,11 +129,14 @@ const botStart = async () => {
     gameBot.command("refund", (ctx) => {
         const userId = ctx.from.id;
         ctx.api
-            .refundStarPayment(userId, 'stxcsVdegh_V9QU471o1mmMeSZHRxYXQRJqRrVFiO0HMHtLxuwi9208sA3Pj4AnsevtdSrZU4aXiOgpyryfaU3swHT4zGhahMTTDVBYyjWAKqr0OWMN227wix9ite7qmRYd')
+            .refundStarPayment(userId, 'stx_-1A70gYe-96UkDmvufNd2jW1K4c6o3xN9IDxO03UNXTQ-98SmR1TkhQdvJp6rLVNvkHpwRj9jw-O9J8-HcPTMafFfhfRTeSK-PBxC4ZXU3oZhFwPwcFHEAJME5T3wze')
             .then(() => {
                 return ctx.reply("Refund successful");
             })
-            .catch(() => ctx.reply("Refund failed"));
+            .catch((error) => {
+                console.log("refund error=", error);
+                ctx.reply("Refund failed");
+            });
     });
 
     (async () => {

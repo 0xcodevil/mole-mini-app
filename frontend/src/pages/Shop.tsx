@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useInitData } from "@telegram-apps/sdk-react";
+import { useInitData, useInvoice } from "@telegram-apps/sdk-react";
 import { Modal, Placeholder, Button } from '@telegram-apps/telegram-ui';
 import { toast } from "react-toastify";
+import Countdown from 'react-countdown';
 
 import Footer from "@/components/Footer";
 import API from "@/libs/API";
@@ -9,20 +10,51 @@ import API from "@/libs/API";
 
 const Shop = () => {
     const initData = useInitData();
+    const invoice = useInvoice();
 
     const [ticket, setTicket] = useState(0);
     const [point, setPoint] = useState(0);
+    const [items, setItems] = useState<any[]>([]);
+    const [purchasedItem, setPurchasedItem] = useState<any>();
+    const [endTime, setEndTime] = useState('');
 
     const [isModalOpen1, setModalOpen1] = useState(false);
     const [isModalOpen2, setModalOpen2] = useState(false);
     const [isModalOpen3, setModalOpen3] = useState(false);
 
     useEffect(() => {
+        API.get('/play/boost/getall').then(res => {
+            setItems(res.data.boosts);
+        }).catch(err => {
+            toast.error('Something went wrong.');
+            console.error(err);
+        });
         API.get(`/users/get/${initData?.user?.id}`).then(res => {
+            setPurchasedItem(res.data.boosts[0]?.item);
+            setEndTime(res.data.boosts[0]?.endTime);
             setPoint(res.data.point);
             setTicket(res.data.ticket);
         }).catch(console.error);
     }, []);
+
+    const handlePurchase = (item: any) => {
+        API.post('/play/invoice', { userid: initData?.user?.id, boostid: item.boostid })
+            .then(res => {
+                console.log(res.data);
+                invoice.open(res.data.link, 'url').then(invoiceRes => {
+                    console.log("invoice res=", invoiceRes);
+                    if (invoiceRes === 'paid') {
+                        setPurchasedItem(items?.find((i: any) => i._id === item._id));
+                        setEndTime(res.data.boost.endTime);
+                    } else {
+                        toast.error('Something went wrong.');
+                    }
+                });
+            }).catch(err => {
+                console.error(err);
+                toast.error(err.message);
+            });
+    }
 
     const handleSwapClick = (points: number) => {
         setModalOpen1(false);
@@ -125,14 +157,22 @@ const Shop = () => {
                     />
                 </Modal>
             </div>
-            {/* <div className="mt-6 w-full relative flex justify-between items-center p-[18px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
-                <img src="/imgs/golden-hammer.png" alt="" className="w-[42px] h-[42px]" />
-                <span className="font-poppins text-[14px]">1000 / 1000</span>
-            </div>
-            <div className="mt-2 w-full relative flex justify-between items-center p-[18px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
-                <img src="/imgs/wooden-hammer.png" alt="" className="w-[42px] h-[42px]" />
-                <span className="font-poppins text-[14px]">1000 / 1000</span>
-            </div> */}
+            <h1 className="mt-6 font-margarine text-[34px] text-center leading-none">Boost hammer</h1>
+            {items.map((item, key) =>
+                <div key={key} className="mt-3 w-full relative flex justify-between items-center px-[18px] py-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+                    <div className="flex flex-1 gap-2">
+                        <img src={`/imgs/${item.boostid}.png`} alt="" className="w-[42px] h-[42px]" />
+                        <div className="flex flex-col justify-center">
+                            <div className="font-lemon text-[13px]">{item.title} {purchasedItem && purchasedItem._id === item._id ? <Countdown date={endTime} intervalDelay={1000} precision={3} onComplete={() => setPurchasedItem(null)} renderer={(props) => <span className="font-poppins text-[10px]">{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</span>} /> : null} </div>
+                            <div className="font-poppins text-[8px]">{item.description}</div>
+                        </div>
+                    </div>
+                    { purchasedItem ? null : <button onClick={() => handlePurchase(item)} className="flex items-center justify-center gap-1 bg-[#FFDD00] rounded-[5px] h-[25px] w-[60px] hover:-translate-y-1 hover:active:translate-y-0 transition-all duration-200">
+                        <img src="/imgs/star.png" className="w-3 h-3" alt="" />
+                        <span className="text-blue-400">{item.price}</span>
+                    </button> }
+                </div>
+            )}
             <div className="absolute w-[500px] top-[80px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_-30%,#00000000_50%)]" />
             <div className="absolute w-[500px] -top-[150px] -left-[60%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_10%,#00000000_50%)]" />
             <Footer />
