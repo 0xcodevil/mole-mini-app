@@ -23,7 +23,6 @@ const Mole = ({
 	points,
 	pointsMin = 1,
 	boost,
-	usingItem
 }: MoleProps) => {
 	const [image, setImage] = useState('mole-0.png');
 	const [whacked, setWhacked] = useState(false)
