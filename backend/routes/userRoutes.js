@@ -22,11 +22,6 @@ const {
     getAvatarImage,
     claimDailyReward,
 
-    purchaseBoost,
-    getAllBoost,
-    addBoost,
-    getMyBoost,
-
 } = require('../controllers/userController');
 
 router.get('/get/:userid', authenticateUser, getUser);
@@ -45,10 +40,5 @@ router.post('/invite/task', authenticateUser, inviteTask);
 
 router.get('/avatar/:userid', getAvatarImage);
 router.post('/claim/daily', authenticateUser, claimDailyReward);
-
-router.post('/boost/purchase', authenticateUser, purchaseBoost);
-router.get('/boost/getall', authenticateUser, getAllBoost);
-router.post('/boost/add', authenticateUser, addBoost);
-router.get('/boost/getmy/:userid', authenticateUser, getMyBoost);
 
 module.exports = router;

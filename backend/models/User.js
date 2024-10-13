@@ -25,8 +25,6 @@ const UserSchema = new mongoose.Schema({
   token: { type: Number, default: 0 },
   point: { type: Number, default: 0 },
   ticket: { type: Number, default: 5 },
-  golden: { type: Number, default: 0 },
-  wooden: { type: Number, default: 0 },
 
   totalScore: { type: Number, default: 0 },
   weeklyScore: { type: Number, default: 0 },
@@ -38,6 +36,7 @@ const UserSchema = new mongoose.Schema({
   boosts: [{
     item: { type: mongoose.Schema.Types.ObjectId, ref: 'BoostItem' },
     endTime: { type: Date, default: Date.now },
+    usesRemaining: { type: Number, default: 1 },
   }],
 });
 

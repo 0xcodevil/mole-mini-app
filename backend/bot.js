@@ -8,6 +8,10 @@ const connectDB = require('./db/connect');
 const logger = require('./helper/logger');
 const userLogin = require('./utils/login');
 
+const User = require('./models/User');
+const BoostItem = require('./models/BoostItem');
+const BoostPurchaseHistory = require('./models/BoostPurchaseHistory');
+
 const botStart = async () => {
     await connectDB(process.env.MONGO_URL);
     const gameBot = new Bot(process.env.BOT_TOKEN);
@@ -69,6 +73,66 @@ const botStart = async () => {
             }
         );
         logger.info(`${ctx.from.first_name}#${ctx.from.id} command 'start'`);
+    });
+
+    // gameBot.command("pay", (ctx) => {
+    //     return ctx.replyWithInvoice("Test Product", "Test description", "{}", "XTR", [
+    //         { amount: 1, label: "Test Product" },
+    //     ]);
+    // });
+
+    gameBot.on("pre_checkout_query", (ctx) => {
+        return ctx.answerPreCheckoutQuery(true).catch(() => {
+            console.error("answerPreCheckoutQuery failed");
+        });
+    });
+
+    gameBot.on("message:successful_payment", async (ctx) => {
+
+        if (!ctx.message || !ctx.message.successful_payment || !ctx.from) {
+            return;
+        }
+
+        const payment = ctx.message.successful_payment;
+        const payload = JSON.parse(payment.invoice_payload);
+
+        await BoostPurchaseHistory.create({
+            user: payload.userid,
+            boostItem: payload.boostid,
+            telegramPaymentChargeId: payment.telegram_payment_charge_id,
+            providerPaymentChargeId: payment.provider_payment_charge_id,
+            payment: JSON.stringify(payment),
+        });
+
+        // Update user boosts
+        var user = await User.findById(payload.userid);
+        var boost = await BoostItem.findById(payload.boostid);
+        if(!user || !boost) {
+            console.log(`there is no boost(${payload.boostid}) or user(${payload.userid})`);
+            return;
+        }
+        const boostIndex = user.boosts.findIndex(b => b.item.equals(boost._id));
+        if (boostIndex !== -1) {
+            user.boosts[boostIndex].endTime = new Date(user.boosts[boostIndex].endTime.getTime() + boost.period * 24 * 60 * 60 * 1000);
+        } else {
+            user.boosts.push({
+                item: boost._id,
+                usesRemaining: new Date(now.getTime() + boost.period * 24 * 60 * 60 * 1000),
+            });
+        }
+        await user.save();
+
+        console.log("successful_payment success=", ctx.message.successful_payment);
+    });
+
+    gameBot.command("refund", (ctx) => {
+        const userId = ctx.from.id;
+        ctx.api
+            .refundStarPayment(userId, 'stxcsVdegh_V9QU471o1mmMeSZHRxYXQRJqRrVFiO0HMHtLxuwi9208sA3Pj4AnsevtdSrZU4aXiOgpyryfaU3swHT4zGhahMTTDVBYyjWAKqr0OWMN227wix9ite7qmRYd')
+            .then(() => {
+                return ctx.reply("Refund successful");
+            })
+            .catch(() => ctx.reply("Refund failed"));
     });
 
     (async () => {

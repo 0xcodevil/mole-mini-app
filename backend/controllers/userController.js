@@ -13,7 +13,7 @@ const { isUserTGJoined } = require('../helper/botHelper');
 
 const getUser = async (req, res) => {
   const { userid } = req.params;
-  const user = await User.findOne({ userid });
+  const user = await User.findOne({ userid }).populate('boosts.item');
   res.status(StatusCodes.OK).json(user);
 }
 
@@ -326,113 +326,7 @@ const getLeaderboard = async (req, res) => {
   }
 }
 
-const purchaseBoost = async (req, res) => {
-  const { userid, boostid } = req.body;
-  const user = await User.findOne({ userid });
-  if(!user) {
-    return res.status(StatusCodes.OK).json({success: false, status: 'nouser', msg: 'Not found user!'});
-  }
-  const currentTime = new Date();
-  for (const boost of user.boosts) {
-    if (currentTime < boost.endTime) {
-      return res.status(StatusCodes.OK).json({success: false, status: 'exist', msg: 'You already buy boost item!'});
-    }
-  }
-  const boostItem = await BoostItem.findById(boostid);
-  if(!boostItem) {
-    return res.status(StatusCodes.OK).json({success: false, status: 'noboostitem', msg: 'Not found boost item!'});
-  }
 
-  var userBoost = null;
-  switch (boostItem.type) {
-    case 'one-time':
-      userBoost = { item: boostItem._id };
-      break;
-    case 'many-time':
-      userBoost = { item: boostItem._id, remainingUses: boostItem.maxUses };
-      break;
-    case 'forever':
-      userBoost = { item: boostItem._id };
-      break;
-    case 'period':
-      const currentTime = new Date();
-      const endTime = new Date(currentTime.getTime() + boostItem.period * 24 * 60 * 60 * 1000);
-      userBoost = { item: boostItem._id, endTime };
-      break;
-  }
-  if(userBoost) {
-    user.boosts.push(userBoost);
-    await user.save();
-  }
-  return res.status(StatusCodes.OK).json({success: true, boost: userBoost, msg: 'Purchase boost successfully!'});
-}
-
-const getAllBoost = async (req, res) => {
-  const boosts = await BoostItem.find({});
-  return res.status(StatusCodes.OK).json({boosts});
-}
-
-const addBoost = async (req, res) => {
-  const { userid, name, title, period, price } = req.body;
-  const boostItem = await BoostItem.findOne({name});
-  if(boostItem) {
-    return res.status(StatusCodes.OK).json({success: false, status: 'exist', msg: 'Boost name already exist!'});
-  }
-  await BoostItem.create({
-    name,
-    title,
-    period,
-    price
-  });
-  return res.status(StatusCodes.OK).json({status: true, msg: 'Boost add success!'});
-}
-
-const getMyBoost = async (req, res) => {
-  const { userid } = req.params;
-  const user = await User.findOne({ userid }).populate('boosts.item');
-  if(!user) {
-    return res.status(StatusCodes.OK).json({success: false, status: 'nouser', msg: 'Not found user!'});
-  }
-
-  const result = await User.aggregate([
-    { $match: { 'boosts.item': { $ne: null } } }, // Filter users with boosts
-    { $unwind: '$boosts' }, // Deconstruct boosts array
-    {
-      $lookup: {
-        from: 'boostitems', // The collection name for BoostItem
-        localField: 'boosts.item',
-        foreignField: '_id',
-        as: 'boostDetails'
-      }
-    },
-    { $unwind: '$boostDetails' }, // Deconstruct boostDetails array
-    {
-      $group: {
-        _id: null,
-        totalUsers: { $addToSet: '$userid' }, // Unique user IDs
-        totalPrice: { $sum: '$boostDetails.price' } // Sum of prices
-      }
-    },
-    {
-      $project: {
-        totalUsersCount: { $size: '$totalUsers' },
-        totalBoostsPrice: '$totalPrice'
-      }
-    }
-  ]);
-  const total = {
-    usersCount: result.length > 0 ? result[0].totalUsersCount.toString() : 0,
-    price: result.length > 0 ? result[0].totalBoostsPrice.toString() : 0
-  }
-
-  const currentTime = new Date();
-  for (const boost of user.boosts) {
-    if (currentTime < boost.endTime) {
-      return res.status(StatusCodes.OK).json({success: true, boost, total});
-    }
-  }
-  return res.status(StatusCodes.OK).json({success: false, status: 'noboost', total, msg: 'You did not buy boost!'});
-}
 module.exports = {
   getUser,
   getAllFriends,
@@ -451,9 +345,5 @@ module.exports = {
   getAvatarImage,
 
   claimDailyReward,
-
-  purchaseBoost,
-  getAllBoost,
-  addBoost,
-  getMyBoost,
+  
 };
