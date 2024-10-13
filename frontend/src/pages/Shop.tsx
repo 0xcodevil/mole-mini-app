@@ -165,18 +165,21 @@ const Shop = () => {
             </div>
             <h1 className="mt-6 font-margarine text-[34px] text-center leading-none">Boost hammer</h1>
             {items.map((item, key) =>
-                <div key={key} className="mt-3 w-full relative flex justify-between items-center px-[18px] py-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+                <div key={key} className="mt-3 w-full relative flex justify-between items-center px-3 py-3 bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                     <div className="flex flex-1 gap-2">
                         <img src={`/imgs/${item.boostid}.png`} alt="" className="w-[42px] h-[42px]" />
                         <div className="flex flex-col justify-center">
-                            <div className="font-lemon text-[13px]">{item.title} {purchasedItem && purchasedItem._id === item._id ? <Countdown date={endTime} intervalDelay={1000} precision={3} onComplete={() => setPurchasedItem(null)} renderer={(props) => <span className="font-poppins text-[10px]">{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</span>} /> : null} </div>
+                            <div className="flex items-end justify-between">
+                                <div className="font-lemon text-[13px]">{item.title}</div>
+                                {purchasedItem && purchasedItem._id === item._id ? <Countdown date={endTime} intervalDelay={1000} precision={3} onComplete={() => setPurchasedItem(null)} renderer={(props) => <span className="font-poppins text-[10px] text-[#F9E813]">{props.days ? props.days.toString() + 'd' : ''} {props.hours.toString()} : {props.minutes.toString().padStart(2, '0')} : {props.seconds.toString().padStart(2, '0')}</span>} /> : null}
+                            </div>
                             <div className="font-poppins text-[8px]">{item.description}</div>
                         </div>
                     </div>
-                    { purchasedItem ? null : <button onClick={() => handlePurchase(item)} className="flex items-center justify-center gap-1 bg-[#FFDD00] rounded-[5px] h-[25px] w-[60px] hover:-translate-y-1 hover:active:translate-y-0 transition-all duration-200">
+                    {purchasedItem ? null : <button onClick={() => handlePurchase(item)} className="flex items-center justify-center gap-1 bg-[#FFDD00] rounded-[5px] h-[25px] w-[60px] hover:-translate-y-1 hover:active:translate-y-0 transition-all duration-200">
                         <img src="/imgs/star.png" className="w-3 h-3" alt="" />
                         <span className="text-blue-400">{item.price}</span>
-                    </button> }
+                    </button>}
                 </div>
             )}
             <div className="absolute w-[500px] top-[80px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_-30%,#00000000_50%)]" />
