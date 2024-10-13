@@ -30,12 +30,19 @@ const Shop = () => {
             console.error(err);
         });
         API.get(`/users/get/${initData?.user?.id}`).then(res => {
-            setPurchasedItem(res.data.boosts[0]?.item);
-            setEndTime(res.data.boosts[0]?.endTime);
             setPoint(res.data.point);
             setTicket(res.data.ticket);
         }).catch(console.error);
+
+        getMyBoostItem();
     }, []);
+
+    const getMyBoostItem = () => {
+        API.get(`/play/boost/getmy/${initData?.user?.id}`).then(res => {
+            setPurchasedItem(res.data.boost.item);
+            setEndTime(res.data.boost?.endTime);
+        }).catch(console.error);
+    }
 
     const handlePurchase = (item: any) => {
         API.post('/play/invoice', { userid: initData?.user?.id, boostid: item.boostid })
@@ -44,8 +51,7 @@ const Shop = () => {
                 invoice.open(res.data.link, 'url').then(invoiceRes => {
                     console.log("invoice res=", invoiceRes);
                     if (invoiceRes === 'paid') {
-                        setPurchasedItem(items?.find((i: any) => i._id === item._id));
-                        setEndTime(res.data.boost.endTime);
+                        getMyBoostItem();
                     } else {
                         toast.error('Something went wrong.');
                     }

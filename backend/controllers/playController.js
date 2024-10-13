@@ -110,7 +110,6 @@ const getMyBoost = async (req, res) => {
   const currentTime = new Date();
   for (const boost of user.boosts) {
     if (currentTime < boost.endTime) {
-      boost.endMS = boost.endTime - currentTime;
       return res.status(StatusCodes.OK).json({success: true, boost});
     }
   }
