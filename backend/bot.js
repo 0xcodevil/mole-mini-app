@@ -56,8 +56,8 @@ const botStart = async () => {
         const keyboard = new InlineKeyboard()
             .webApp('😺 Play Now 😺', play_url)
             .row()
-            .url('🚀 ✖ 🚀', 'https://x.com/test')
-            .url('👬 Join 👬', 'https://t.me/test')
+            .url('🚀 ✖ 🚀', 'https://x.com/MoleSmash')
+            .url('👬 Join 👬', 'https://t.me/MoleOfficialchannel')
             .row()
             .url('🙈 Invite 🙉', invite_fullUrl)
 
