@@ -38,7 +38,7 @@ body {
 .Toastify__toast{
     border: solid #07BC0C 1px;
     border-radius: 10px;
-    margin: 0px 20px;
+    margin: 10px 20px 0;
     min-height: auto;
 }
 

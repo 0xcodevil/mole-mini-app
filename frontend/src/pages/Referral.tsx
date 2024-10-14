@@ -194,7 +194,7 @@ const Referral = () => {
                     trigger={<button disabled={isJoinedTelegramGroup} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
-                        header={<span className="text-black dark:text-white">Join our TG chat</span>}
+                        header={<span className="text-[28px] font-lemon text-transparent bg-clip-text bg-gradient-to-b from-[#C100FB80] to-[#00C8FF] border-none leading-none">Join our TG chat</span>}
                         action={
                             <Fragment>
                                 <Button onClick={handleTGGroupLink} size="m" stretched>Follow</Button>
@@ -219,7 +219,7 @@ const Referral = () => {
                     trigger={<button disabled={isJoinedTelegramChannel} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
-                        header={<span className="text-black dark:text-white">Join our TG channel</span>}
+                        header={<span className="text-[28px] font-lemon text-transparent bg-clip-text bg-gradient-to-b from-[#C100FB80] to-[#00C8FF] border-none leading-none">Join our TG channel</span>}
                         action={
                             <Fragment>
                                 <Button onClick={handleTGChannelLink} size="m" stretched>Join</Button>
@@ -244,7 +244,7 @@ const Referral = () => {
                     trigger={<button disabled={isFollowingX} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
-                        header={<span className="text-black dark:text-white">Follow our Twitter</span>}
+                        header={<span className="text-[28px] font-lemon text-transparent bg-clip-text bg-gradient-to-b from-[#C100FB80] to-[#00C8FF] border-none leading-none">Follow our Twitter</span>}
                         action={
                             <Fragment>
                                 <Button onClick={handleXLink} size="m" stretched>Follow</Button>
@@ -296,7 +296,7 @@ const Referral = () => {
                     trigger={<button disabled={isRetweetX} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">Redeem</button>}
                 >
                     <Placeholder
-                        header={<span className="text-black dark:text-white">Retweet our blog</span>}
+                        header={<span className="text-[28px] font-lemon text-transparent bg-clip-text bg-gradient-to-b from-[#C100FB80] to-[#00C8FF] border-none leading-none">Retweet our blog</span>}
                         action={
                             <Fragment>
                                 <Button onClick={handleRetweetXLink} size="m" stretched>Retweet</Button>
