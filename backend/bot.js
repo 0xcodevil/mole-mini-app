@@ -68,7 +68,7 @@ const botStart = async () => {
         await ctx.replyWithPhoto(
             process.env.BOT_LOGO,
             {
-                caption: 'welcome to mole mash mini app',
+                caption: '🎉 Catch the Moles! 🏆\n\r\n\rJoin the mole hunting game now and start collecting points! 🐾 Every time you catch a mole, you’ll earn points, which can later be exchanged for coins that will be issued! 💰\n\r\n\r👉 A thrilling game where you earn rewards by accumulating points!\n\r👉 Catch moles and get your hands on some coins!\n\r\n\rComplete extra missions to earn even more rewards!\n\r\n\r1️⃣ Increase Telegram channel members – Earn bonus points by adding more members!\n\r2️⃣ Follow on Twitter – Follow us on Twitter and get extra points!\n\r3️⃣ Invite friends – Invite your friends and earn even more points!\n\r\n\rJoin now and become the ultimate mole hunter! 🛠',
                 reply_markup: keyboard,
             }
         );
