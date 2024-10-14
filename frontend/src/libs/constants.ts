@@ -21,7 +21,7 @@ export const LINK = {
     X: 'https://x.com/MoleSmash',
     YOUTUBE: 'https://youtube.com/@test',
     WEBSITE: 'https://test.xyz/',
-    TWEET: 'https://x.com/tapp?t=w9mTEnT0h7M7zzj9ki4jpw&s=09',
+    TWEET: 'https://x.com/MoleSmash/status/1845850943692456398?t=_Tmli3tAYYSnEhnrY9A94Q&s=19',
     MANIFEST: 'https://supercoolx.github.io/manifests/mole-manifest.json',
 }
 
