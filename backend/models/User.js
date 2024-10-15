@@ -11,12 +11,12 @@ const UserSchema = new mongoose.Schema({
   inviter: { type: String, default: '' },
   isPremium: { type: Boolean, default: false },
 
-  walletConnected: { type: Boolean, default: false },
-  telegramChannelJoined: { type: Boolean, default: false },
-  telegramGroupJoined: { type: Boolean, default: false },
-  youtubeSubscribed: { type: Boolean, default: false },
-  xFollowed: { type: Boolean, default: false },
-  xTweet: { type: Boolean, default: false },
+  referrals: [{
+    item: { type: mongoose.Schema.Types.ObjectId, ref: 'ReferralLink' },
+    finished: { type: Boolean, default: false },
+    updatedAt: { type: Date, default: Date.now },
+  }],
+  
   inviteFive: { type: Boolean, default: false },
   
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
