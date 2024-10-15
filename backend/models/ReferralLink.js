@@ -10,7 +10,7 @@ const ReferralLinkSchema = new mongoose.Schema(
         logo: { type: String, default: '' },
         type: { type: String, required: true, default: 'social' },
         url: { type: String, default: 'https://test.com' },
-        chatId: { type: Number, default: 0 },   //Only need in telegram channel or group
+        chatid: { type: Number, default: 0 },   //Only need in telegram channel or group
         bonus: { type: Number, default: 100 },
         order: { type: Number, default: 100 },
         visible: { type: Boolean, default: true }
