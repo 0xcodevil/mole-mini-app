@@ -16,12 +16,12 @@ export const GAME = {
 
 export const LINK = {
     TELEGRAM_MINIAPP: 'https://t.me/SmashMoleBot/play',
-    TELEGRAM_GROUP: 'https://t.me/test',
-    TELEGRAM_CHANNEL: 'https://t.me/MoleOfficialchannel',
-    X: 'https://x.com/MoleSmash',
-    YOUTUBE: 'https://youtube.com/@test',
-    WEBSITE: 'https://test.xyz/',
-    TWEET: 'https://x.com/MoleSmash/status/1845850943692456398?t=_Tmli3tAYYSnEhnrY9A94Q&s=19',
+    // TELEGRAM_GROUP: 'https://t.me/test',
+    // TELEGRAM_CHANNEL: 'https://t.me/MoleOfficialchannel',
+    // X: 'https://x.com/MoleSmash',
+    // YOUTUBE: 'https://youtube.com/@test',
+    // WEBSITE: 'https://test.xyz/',
+    // TWEET: 'https://x.com/MoleSmash/status/1845850943692456398?t=_Tmli3tAYYSnEhnrY9A94Q&s=19',
     MANIFEST: 'https://supercoolx.github.io/manifests/mole-manifest.json',
 }
 

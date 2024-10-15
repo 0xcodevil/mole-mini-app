@@ -157,8 +157,8 @@ const generateInvoice = async(req, res) => {
     return res.status(StatusCodes.OK).json({success: false, status: 'noboost', msg: 'There is no boost item!'});
   }
 
-  const paylog = { userid: user._id, boostid: boost._id };
-  const invoiceLink = await createInvoiceLink(boost.title, boost.description, JSON.stringify(paylog), boost.price);
+  const payload = { userid: user._id, boostid: boost._id };
+  const invoiceLink = await createInvoiceLink(boost.title, boost.description, JSON.stringify(payload), boost.price);
   console.log("invoiceLink=", invoiceLink);
   return res.status(StatusCodes.OK).json({success: true, link: invoiceLink});
 }
