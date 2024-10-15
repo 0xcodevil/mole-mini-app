@@ -7,21 +7,6 @@
     --dirt: hsl(35, 40%, 20%);
   }
   
-  * {
-    box-sizing: border-box;
-  }
-  
-  body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    margin: 0;
-    font-family: 'Fredoka One', cursive;
-    background: var(--sky);
-  }
-  
   .word {
     display: inline-block;
     white-space: nowrap;
