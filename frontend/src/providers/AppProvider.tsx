@@ -47,10 +47,21 @@ const AppProvider = ({ children }: { children: JSX.Element }) => {
             src: ['/mp3/background.mp3'],
             autoplay: true,
             loop: true,
+            preload: true,
             volume: 0.3
         });
 
         audio.play();
+
+        const handleVisibilityChange = () => {
+            Howler.mute(document.hidden);
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            audio.unload();
+        }
     }, []);
 
     return (
