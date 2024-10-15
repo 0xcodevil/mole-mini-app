@@ -22,6 +22,19 @@ const Referral = () => {
     const [dailyRemainSecond, setDailyRemainSecond] = useState(0);
     const [dailyReward, setDailyReward] = useState(500);
 
+    useEffect(() => {
+        API.get('/users/task/getall').then(res => {
+            setReferrals(res.data.referrals);
+        }).catch(console.log);
+        getMyTaskList();
+
+        handleClaimDailyReward();
+    }, [initData]);
+    const getMyTaskList = () => {
+        API.get(`/users/task/getmy/${initData?.user?.id}`).then(res => {
+            setMyReferrals(res.data.myReferrals);
+        }).catch(console.log);
+    }
     const handleClaimDailyReward = (status = 0) => {
         API.post(`/users/claim/daily`, { userid: initData?.user?.id, status }).then(res => {
             if (res.data.success) {
@@ -34,21 +47,6 @@ const Referral = () => {
                 toast.error(res.data.msg);
             }
         }).catch(console.error);
-    }
-
-    useEffect(() => {
-        API.get('/users/task/getall').then(res => {
-            setReferrals(res.data.referrals);
-        }).catch(console.log);
-        getMyTaskList();
-
-        handleClaimDailyReward();
-    }, [initData]);
-
-    const getMyTaskList = () => {
-        API.get(`/users/task/getmy/${initData?.user?.id}`).then(res => {
-            setMyReferrals(res.data.myReferrals);
-        }).catch(console.log);
     }
 
     const handlePartner = (referral: any, myReferral: any) => {
