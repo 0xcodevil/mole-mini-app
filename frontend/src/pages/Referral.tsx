@@ -127,7 +127,7 @@ const Referral = () => {
                     trigger={<button disabled={myReferral && myReferral.finished} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">{btnTitle}</button>}
                 >
                     <Placeholder
-                        header={<span className="text-[28px] font-lemon text-transparent bg-clip-text bg-gradient-to-b from-[#C100FB80] to-[#00C8FF] border-none leading-none">Join our TG channel</span>}
+                        header={<span className="text-[28px] font-lemon text-transparent bg-clip-text bg-gradient-to-b from-[#C100FB80] to-[#00C8FF] border-none leading-none">{referral.title}</span>}
                         action={
                             <Fragment>
                                 <Button onClick={() => {
