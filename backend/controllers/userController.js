@@ -61,7 +61,7 @@ const checkTask = async (req, res) => {
   if(referral.type == "own_tg_channel" || referral.type == "own_tg_group" || referral.type == "partner_tg_channel") {
     const isTGJoined = await isUserTGJoined(userid, referral.chatid);
     if(!isTGJoined) {
-      return res.status(StatusCodes.OK).json({success: false, status: 'notjoin', msg: `not joined telegram yet!`});
+      return res.status(StatusCodes.OK).json({success: false, status: 'notjoin', msg: `Not completed yet!`});
     }
   } else if(referral.type == "wallet_connect") {
     follow.payload = payload;
