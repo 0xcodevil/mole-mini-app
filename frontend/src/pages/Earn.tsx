@@ -4,6 +4,7 @@ import { useInitData } from "@telegram-apps/sdk-react";
 import API from "@/libs/API";
 import Footer from "@/components/Footer";
 import Link from "@/components/Link";
+import Farm from "@/components/Farm";
 
 const Earn = () => {
     const initData = useInitData();
@@ -37,6 +38,9 @@ const Earn = () => {
                 <img src="/imgs/point.png" alt="" className="w-[42px] h-[42px]" />
                 <span className="font-lemon text-[20px]">{points.toLocaleString()}</span>
                 {/* <span className="font-poppins text-[14px]">1000 / 1000</span> */}
+            </div>
+            <div className="mt-6 w-full relative flex justify-around items-center px-2 py-[18px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
+                <Farm plusPoint={(val) => setPoints(prev => prev + val)} />
             </div>
             <div className="absolute w-[500px] top-[80px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_-30%,#00000000_50%)]" />
             <div className="absolute w-[500px] -top-[150px] -left-[60%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_10%,#00000000_50%)]" />

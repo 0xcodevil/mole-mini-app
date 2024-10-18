@@ -29,6 +29,9 @@ const UserSchema = new mongoose.Schema({
   totalScore: { type: Number, default: 0 },
   weeklyScore: { type: Number, default: 0 },
   monthlyScore: { type: Number, default: 0 },
+  
+  lastFarmAt: { type: Date, default: Date.now },
+  farmStarted: { type: Boolean, default: false },
 
   lastRewardDate: { type: Date },
   rewardStreak: { type: Number, default: 0 },

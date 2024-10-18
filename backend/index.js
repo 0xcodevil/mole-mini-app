@@ -11,6 +11,7 @@ const connectDB = require('./db/connect');
 const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
 const playRouter = require('./routes/playRoutes');
+const farmRouter = require('./routes/farmRoutes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/play', playRouter);
+app.use('/api/v1/farm', farmRouter);
 
 app.use(express.static('../frontend/dist'));
 app.get('*', function(req, res) {
