@@ -67,7 +67,7 @@ const Farm = ({ plusPoint }: { plusPoint: (val: number) => void }) => {
                     (claimable ?
                         'Claim' :
                         <Fragment>
-                            <div className="text-sm text-center flex-2">Farming { reward } coins</div>
+                            <div className="text-sm text-center flex-2">Farming +{ reward }</div>
                             <Countdown
                                 date={endTimeToClaim}
                                 intervalDelay={1000}
