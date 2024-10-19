@@ -7,8 +7,8 @@ const { FARM } = require('../helper/constants');
 const checkFarmStatus = async (req, res) => {
     const { userid } = req.body;
     const user = await User.findOne({ userid });
-
-    return res.status(StatusCodes.OK).json({ started: user.farmStarted, startedAt: user.lastFarmAt, ...FARM });
+    const remainTime = user.lastFarmAt - new Date() + FARM.duration;
+    return res.status(StatusCodes.OK).json({ started: user.farmStarted, startedAt: user.lastFarmAt, remainTime, ...FARM });
 }
 
 const startFarm = async (req, res) => {

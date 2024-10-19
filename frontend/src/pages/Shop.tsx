@@ -39,8 +39,10 @@ const Shop = () => {
 
     const getMyBoostItem = () => {
         API.get(`/play/boost/getmy/${initData?.user?.id}`).then(res => {
-            setPurchasedItem(res.data.boost.item);
-            setEndTime(res.data.boost?.endTime);
+            if (res.data.success) {
+                setPurchasedItem(res.data.boost.item);
+                setEndTime(res.data.boost?.endTime);
+            }
         }).catch(console.error);
     }
 
