@@ -33,7 +33,7 @@ const Farm = ({ plusPoint }: { plusPoint: (val: number) => void }) => {
                     setFarmStarted(false);
                     setClaimable(false);
                     plusPoint(res.data.reward);
-                    toast.success(`You claimed ${res.data.reward} onions`);
+                    toast.success(`You claimed ${res.data.reward} points.`);
                 } else {
                     toast.error(res.data.msg);
                 }
