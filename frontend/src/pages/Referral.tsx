@@ -117,7 +117,7 @@ const Referral = () => {
                     <div>
                         <div className="font-lemon text-[13px]">{referral.title}</div>
                         <div className="flex items-center gap-1">
-                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">{referral.bonus.toLocaleString()} Token</span></div>
+                            <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">{referral.bonus.toLocaleString()} Coins</span></div>
                         </div>
                     </div>
                 </div>
@@ -203,7 +203,7 @@ const Referral = () => {
                                 <div>
                                     <div className="font-lemon text-[13px]">{referral.title}</div>
                                     <div className="flex items-center gap-1">
-                                        <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">{referral.bonus.toLocaleString()} Token</span></div>
+                                        <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">{referral.bonus.toLocaleString()} Coins</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +223,7 @@ const Referral = () => {
                                 <div>
                                     <div className="font-lemon text-[13px]">{referral.title}</div>
                                     <div className="flex items-center gap-1">
-                                        <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">{referral.bonus.toLocaleString()} Token</span></div>
+                                        <div className="font-poppins text-[12px]">Get Reward <span className="ml-1 text-[#F9E813] text-[8px] font-press">{referral.bonus.toLocaleString()} Coins</span></div>
                                     </div>
                                 </div>
                             </div>
