@@ -1,6 +1,7 @@
 import { useState, useLayoutEffect, useEffect, createContext, useContext } from "react";
 import { useInitData } from "@telegram-apps/sdk-react";
 import { Howl, Howler } from "howler";
+import { AxiosRequestHeaders } from "axios";
 
 import API from "@/libs/API";
 
@@ -30,6 +31,13 @@ const AppProvider = ({ children }: { children: JSX.Element }) => {
     }
 
     useLayoutEffect(() => {
+        API.interceptors.request.use(config => {
+            config.headers = {
+                Authorization: localStorage.getItem('token') || ''
+            } as AxiosRequestHeaders;
+            return config;
+        });
+
         API.post('/auth/login', {
             userid: initData?.user?.id,
             username: initData?.user?.username,
