@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useInitData } from "@telegram-apps/sdk-react";
 import API from '@/libs/API';
 import Avatar from '@/components/Avatar';
+import { toBMK } from '@/libs/utils';
 
 const Leaderboard = () => {
     const initData = useInitData();
@@ -48,7 +49,7 @@ const Leaderboard = () => {
                     <Avatar userid={initData?.user?.id} width={42} height={42} username={initData?.user?.username} />
                     <div className="">
                         <div className="font-lemon text-[12px]">{ self?.firstname }</div>
-                        <div className="font-poppins">{self?.point.toLocaleString()} coins</div>
+                        <div className="font-poppins">{toBMK(self?.point)} coins</div>
                     </div>
                 </div>
                 <div className="font-poppins text-[20px]"># {selfRank}</div>
@@ -61,7 +62,7 @@ const Leaderboard = () => {
                             <Avatar userid={u.userid} width={32} height={32} username={u.username} />
                             <div className="flex flex-col justify-center gap-[6px] leading-none">
                                 <div className="text-[12px] font-lemon">{ u.firstname }</div>
-                                <div className="text-[10px]">{ u.point.toLocaleString() } coins</div>
+                                <div className="text-[10px]">{ toBMK(u.point) } coins</div>
                             </div>
                         </div>
                         { key === 0 ? <div><img className="w-[17px] h-[25px]" src="/imgs/gold-medal.png" alt="" /></div> :

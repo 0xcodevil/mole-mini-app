@@ -6,6 +6,7 @@ import { LINK } from "@/libs/constants";
 import API from "@/libs/API";
 import Avatar from '@/components/Avatar';
 import Footer from "@/components/Footer";
+import { toBMK } from '@/libs/utils';
 
 const Friends = () => {
     
@@ -78,7 +79,7 @@ const Friends = () => {
                             <Avatar userid={u.userid} width={32} height={32} username={u.username} />
                             <div className="flex flex-col justify-center gap-[6px] leading-none">
                                 <div className="text-[12px] font-lemon">{ u.firstname }</div>
-                                <div className="text-[10px]">{ u.point.toLocaleString() } coins</div>
+                                <div className="text-[10px]">{ toBMK(u.point) } coins</div>
                             </div>
                         </div>
                     )) }

@@ -4,6 +4,7 @@ import { useInitData } from "@telegram-apps/sdk-react";
 import API from "@/libs/API";
 import Footer from "@/components/Footer";
 import Link from "@/components/Link";
+import { toBMK } from '@/libs/utils';
 
 const Earn = () => {
     const initData = useInitData();
@@ -35,7 +36,7 @@ const Earn = () => {
             </Link>
             <div className="mt-6 w-full relative flex justify-around items-center p-[18px] bg-[#FF02A629] border border-[#C400FA] rounded-[15px]">
                 <img src="/imgs/point.png" alt="" className="w-[42px] h-[42px]" />
-                <span className="font-lemon text-[20px]">{points.toLocaleString()}</span>
+                <span className="font-lemon text-[20px]">{toBMK(points)}</span>
                 {/* <span className="font-poppins text-[14px]">1000 / 1000</span> */}
             </div>
             <div className="absolute w-[500px] top-[80px] left-[20%] h-[500px] -z-50 rounded-full [background:radial-gradient(#00A6FF68_-30%,#00000000_50%)]" />
