@@ -53,8 +53,8 @@ const Game = () => {
 	const [score, setScore] = useState(0)
 	const [endTime, setEndTime] = useState('')
 	const [newHighScore, setNewHighScore] = useState(false)
-	const [muted,] = usePersistentState('whac-muted', true)
-	const [highScore, setHighScore] = usePersistentState('whac-high-score', 0)
+	const [muted,] = usePersistentState(initData?.user?.id + '_whac-muted', true)
+	const [highScore, setHighScore] = usePersistentState(initData?.user?.id + '_whac-high-score', 0)
 	const boardRef = useRef(null)
 
 	const onWhack = (points: number, golden: boolean) => {
