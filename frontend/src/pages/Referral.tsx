@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useInitData, useUtils } from "@telegram-apps/sdk-react";
-import { useTonWallet, useTonConnectModal, useTonAddress } from '@tonconnect/ui-react';
+import { useTonWallet, useTonConnectModal, useTonConnectUI, useTonAddress } from '@tonconnect/ui-react';
 import Countdown from 'react-countdown';
 
 import API from "@/libs/API";
@@ -13,6 +13,7 @@ const Referral = () => {
     const wallet_address = useTonAddress();
     const initData = useInitData();
     const wallet = useTonWallet();
+    const [tonconnect] = useTonConnectUI();
     const { open } = useTonConnectModal();
 
     const [tab, setTab] = useState<'earn' | 'daily' | 'channel' | 'project'>('earn');
@@ -66,7 +67,8 @@ const Referral = () => {
     const handleMyRefferalLink = (linkid: string) => {
         const myReferral = myReferrals.find(ref => ref.item.linkid === linkid);
         if(myReferral && myReferral.finished) {
-            return;
+            if (linkid != 'wallet' || wallet)
+                return;
         }
 
         if(linkid == 'wallet') {
@@ -103,12 +105,8 @@ const Referral = () => {
         }
         const myReferral = myReferrals.find(ref => ref.item.linkid === linkid);
 
-        if(linkid == 'wallet') {
-            if(myReferral && myReferral.finished) {
-                btnTitle = "Connected";
-            } else if(!wallet) {
-                btnTitle = "Connect";
-            }
+        if (linkid == 'wallet' && !wallet) {
+            btnTitle = "Connect";
         }
         return (
             <div className="mt-[14px] relative flex justify-between items-center py-5 px-3 before:-z-10 before:content-[''] before:absolute before:inset-0 before:border before:border-transparent before:rounded-[15px] before:[background:linear-gradient(to_right,#C100FB,#00C8FF)_border-box] before:[-webkit-mask:linear-gradient(#fff_0_0)_padding-box,_linear-gradient(#fff_0_0)] before:[mask-composite:exclude]">
@@ -121,7 +119,13 @@ const Referral = () => {
                         </div>
                     </div>
                 </div>
-                {linkid == 'wallet' && <button disabled={myReferral && myReferral.finished} onClick={() => handleMyRefferalLink(linkid)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">{btnTitle}</button>}
+                {linkid == 'wallet' && <div className="flex gap-1">
+                    { !wallet && <button onClick={() => tonconnect.disconnect()} className=" bg-[#FFDD00] rounded-[5px] h-[25px] w-[25px] hover:-translate-y-1 hover:active:translate-y-0 transition-all duration-200 flex items-center justify-center">
+                        <img src="/imgs/logout.png" alt="" className="w-3 h-3" />    
+                    </button>}
+                    <button disabled={wallet && myReferral && myReferral.finished} onClick={() => handleMyRefferalLink(linkid)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">{btnTitle}</button>
+                    </div>
+                }
                 {linkid != 'wallet' && <Modal
                     header={<Modal.Header />}
                     trigger={<button disabled={myReferral && myReferral.finished} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">{btnTitle}</button>}
