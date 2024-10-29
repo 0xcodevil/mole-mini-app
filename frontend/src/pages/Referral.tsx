@@ -98,7 +98,7 @@ const Referral = () => {
             } else toast.error(res.data.msg);
         }).catch(console.error)
     }
-    const myReferralComponent = (linkid: string, btnTitle = "Reddem") => {
+    const myReferralComponent = (linkid: string, btnTitle = "Redeem") => {
         const referral = referrals.find(ref => ref.linkid === linkid);
         if(!referral) {
             return '';
@@ -120,7 +120,7 @@ const Referral = () => {
                     </div>
                 </div>
                 {linkid == 'wallet' && <div className="flex gap-1">
-                    { !wallet && <button onClick={() => tonconnect.disconnect()} className=" bg-[#FFDD00] rounded-[5px] h-[25px] w-[25px] hover:-translate-y-1 hover:active:translate-y-0 transition-all duration-200 flex items-center justify-center">
+                    { wallet && <button onClick={() => tonconnect.disconnect()} className=" bg-[#FFDD00] rounded-[5px] h-[25px] w-[25px] hover:-translate-y-1 hover:active:translate-y-0 transition-all duration-200 flex items-center justify-center">
                         <img src="/imgs/logout.png" alt="" className="w-3 h-3" />    
                     </button>}
                     <button disabled={wallet && myReferral && myReferral.finished} onClick={() => handleMyRefferalLink(linkid)} className="text-[#6D04A1] disabled:text-[#FFDD00] text-[8px] font-poppins font-semibold bg-[#FFDD00] disabled:bg-[#6D04A1] rounded-[5px] h-[25px] w-[69px] hover:-translate-y-1 hover:active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none transition-all duration-200">{btnTitle}</button>
