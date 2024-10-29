@@ -17,13 +17,13 @@ const AppContext = createContext<AppContextData | null>(null);
 const AppProvider = ({ children }: { children: JSX.Element }) => {
 
     const initData = useInitData();
-    const [volume, setVolume] = useState<Volume>(localStorage.getItem('volume') === "off" ? "off" : "on");
+    const [volume, setVolume] = useState<Volume>(localStorage.getItem(initData?.user?.id + '_volume') === "off" ? "off" : "on");
 
     useEffect(() => {
         let isMute = volume === "off";
         Howler.mute(isMute);
-        localStorage.setItem('volume', volume);
-        localStorage.setItem('whac-muted', volume === "on" ? "false" : "true");
+        localStorage.setItem(initData?.user?.id + '_volume', volume);
+        localStorage.setItem(initData?.user?.id + '_whac-muted', volume === "on" ? "false" : "true");
     }, [volume])
 
     const toggleMusic = () => {
@@ -33,7 +33,7 @@ const AppProvider = ({ children }: { children: JSX.Element }) => {
     useLayoutEffect(() => {
         API.interceptors.request.use(config => {
             config.headers = {
-                Authorization: localStorage.getItem('token') || ''
+                Authorization: localStorage.getItem(initData?.user?.id + '_token') || ''
             } as AxiosRequestHeaders;
             return config;
         });
@@ -46,7 +46,7 @@ const AppProvider = ({ children }: { children: JSX.Element }) => {
             is_premium: initData?.user?.isPremium,
             inviter: initData?.startParam,
         }).then((res) => {
-            localStorage.setItem('token', `Bearer ${res.data.token}`);
+            localStorage.setItem(initData?.user?.id + '_token', `Bearer ${res.data.token}`);
             console.log('User logined:', initData?.user?.username, initData?.user?.firstName, initData?.user?.lastName);
         })
         .catch(console.error);

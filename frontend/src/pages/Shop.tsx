@@ -7,6 +7,7 @@ import Countdown from 'react-countdown';
 import Footer from "@/components/Footer";
 import API from "@/libs/API";
 // import Link from "@/components/Link";
+import { toBMK } from '@/libs/utils';
 
 const Shop = () => {
     const initData = useInitData();
@@ -90,11 +91,11 @@ const Shop = () => {
                 <div className="flex flex-col items-start justify-center gap-3">
                     <div className="flex items-center gap-3">
                         <img className="w-[34px]" src="/imgs/ticket.png" alt="" />
-                        <span className="text-[#F9E813]">{ticket.toLocaleString()} <small>tickets</small></span>
+                        <span className="text-[#F9E813]">{toBMK(ticket)} <small>tickets</small></span>
                     </div>
                     <div className="flex items-center gap-3">
                         <img className="w-[30px]" src="/imgs/point.png" alt="" />
-                        <span className="text-[#F9E813]">{point.toLocaleString()} <small>coins</small></span>
+                        <span className="text-[#F9E813]">{toBMK(point)} <small>coins</small></span>
                     </div>
                 </div>
                 <img src="/imgs/earn.png" alt="" className="w-[100px]" />
