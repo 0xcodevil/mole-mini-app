@@ -38,7 +38,7 @@ const claimFarm = async (req, res) => {
     }
 
     user.farmStarted = false;
-    user.point += FARM.reward;
+    user.addPoint(FARM.reward);
 
     await user.save();
     return res.status(StatusCodes.OK).json({ success: true, point: user.point, reward: FARM.reward });
