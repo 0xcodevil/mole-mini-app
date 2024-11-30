@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useInitData } from "@telegram-apps/sdk-react";
 
+import Crypto from "@/libs/crypto";
 import API from "@/libs/API";
 import Link from "@/components/Link";
 
@@ -10,20 +11,22 @@ interface FinishScreenProps {
 	onRestart: () => any;
 	onReset: () => any;
 	result: number;
+	gameId: string;
 }
 
-const FinishScreen = ({ onRestart, result }: FinishScreenProps) => {
+const FinishScreen = ({ onRestart, result, gameId }: FinishScreenProps) => {
 	const initData = useInitData();
 	useEffect(() => {
 		if (!result) return;
-		API.post('/play/result', { userid: initData?.user?.id, point: result })
+		const data = Crypto.encrypt({ score: result, gameId });
+		API.post('/play/result', { userid: initData?.user?.id, data })
 			.then(res => {
 				if (!res.data.success) console.error(res.data.msg);
 			}).catch(err => {
 				console.error(err);
 				toast.error(err.message);
 			});
-	}, [result]);
+	}, [result, gameId]);
 
 	return (
 		<div className="z-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[272px] rounded-[17px] bg-[#FF02D542] border border-[#C400FA] flex flex-col justify-end items-center pb-[40px]">

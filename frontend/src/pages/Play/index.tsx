@@ -39,6 +39,7 @@ const Game = () => {
 	const { play: playSparkle } = useAudio('/mp3/sparkle.mp3')
 	const { play: playClick } = useAudio('/mp3/click.mp3')
 
+  const [gameId, setGameId] = useState<string>('');
 	const [ticket, setTicket] = useState(0);
 	const [boost, setBoost] = useState(1);
 	const [boostImage, setBoostImage] = useState('');
@@ -143,6 +144,7 @@ const Game = () => {
 			.then(res => {
 				if (res.data.success) {
 					setTicket(res.data.ticket);
+					setGameId(res.data.gameId);
 					if (!muted) playClick()
 					setScore(0)
 					setNewHighScore(false)
@@ -261,6 +263,7 @@ const Game = () => {
 					onReset={resetGame}
 					newHigh={newHighScore}
 					result={score}
+					gameId={gameId}
 				/>
 			)}
 		</Fragment>

@@ -14,6 +14,7 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "download": "^8.0.0",
     "express": "^4.21.0",
@@ -26,7 +27,8 @@
     "otp-generator": "^4.0.1",
     "pino": "^9.4.0",
     "pino-pretty": "^11.2.2",
-    "toastify": "^2.0.1"
+    "toastify": "^2.0.1",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

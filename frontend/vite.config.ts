@@ -6,6 +6,7 @@ import basicSsl from '@vitejs/plugin-basic-ssl';
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
+  envDir: '..',
   plugins: [
     // Allows using React dev server along with building a React application with Vite.
     // https://npmjs.com/package/@vitejs/plugin-react-swc
@@ -23,7 +24,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:6001',
+        target: 'http://127.0.0.1:6001',
         changeOrigin: true,
         secure: false,
         ws: true,
