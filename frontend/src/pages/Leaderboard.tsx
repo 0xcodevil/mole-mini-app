@@ -54,7 +54,7 @@ const Leaderboard = () => {
                 </div>
                 <div className="font-poppins text-[20px]"># {selfRank}</div>
             </div>
-            <h1 className="font-lemon text-[13px] my-[28px]">{userCount} holders</h1>
+            <h1 className="font-lemon text-[13px] my-[28px]">{Math.max(userCount, 300000).toLocaleString()} holders</h1>
             <div className="h-[calc(100vh-330px)] overflow-y-auto flex flex-col gap-[28px]">
                 { users.map((u, key) => (
                     <div key={key} className="flex items-center justify-between pr-[20px]">
